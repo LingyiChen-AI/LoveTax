@@ -3,7 +3,9 @@ import { emailLog } from '@/lib/db/schema';
 import { getTransport, emailFrom } from './transport';
 import type { SendArgs } from './types';
 
-const BACKOFF_MS = [1000, 5000, 30000];
+const BACKOFF_MS = process.env.NODE_ENV === 'test' || process.env.VITEST
+  ? [10, 10, 10]
+  : [1000, 5000, 30000];
 
 function sleep(ms: number) { return new Promise((r) => setTimeout(r, ms)); }
 
