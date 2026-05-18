@@ -18,8 +18,8 @@ jobs:
     env:
       DATABASE_URL: postgres://zchat:zchat@localhost:5433/zchat_test
       AUTH_SECRET: ci-secret-ci-secret-ci-secret-ci
-      AUTH_URL: http://localhost:3000
-      APP_URL: http://localhost:3000
+      AUTH_URL: http://localhost:30001
+      APP_URL: http://localhost:30001
       SMTP_HOST: localhost
       SMTP_PORT: '1026'
       SMTP_FROM: zchat <no-reply@test.local>

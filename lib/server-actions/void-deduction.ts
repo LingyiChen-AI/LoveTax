@@ -36,7 +36,7 @@ export async function voidDeductionAction(input: { id: string; reason?: string }
   );
   const remaining = Math.max(0, DAILY_MAX - Number(agg?.s ?? 0));
 
-  const appUrl = process.env.APP_URL ?? 'http://localhost:3000';
+  const appUrl = process.env.APP_URL ?? 'http://localhost:30001';
   const rendered = await renderVoid({
     appUrl, fromName: me.name, toName: partner.displayName,
     points: row.points, reason: row.reason, remaining

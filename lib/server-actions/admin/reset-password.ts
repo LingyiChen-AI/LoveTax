@@ -30,7 +30,7 @@ export async function adminResetPassword(userId: string): Promise<{ ok: true } |
   const hash = await bcrypt.hash(temp, 12);
   await db.update(users).set({ passwordHash: hash, mustChangePassword: true, updatedAt: new Date() }).where(eq(users.id, userId));
 
-  const appUrl = process.env.APP_URL ?? 'http://localhost:3000';
+  const appUrl = process.env.APP_URL ?? 'http://localhost:30001';
   const rendered = await renderPasswordReset({ appUrl, email: user.email, tempPassword: temp });
   // Fire-and-forget; sendWithRetry never throws (logs failures to email_log)
   sendWithRetry({

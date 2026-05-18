@@ -12,7 +12,7 @@ export async function adminResendEmail(logId: string): Promise<{ ok: true } | { 
   if (!log) return { error: 'NOT_FOUND' };
   if (log.status === 'sent') return { error: 'CONFLICT' };
 
-  const appUrl = process.env.APP_URL ?? 'http://localhost:3000';
+  const appUrl = process.env.APP_URL ?? 'http://localhost:30001';
   let payload: { html: string; text: string };
   if (log.type === 'deduction' || log.type === 'void') {
     if (!log.deductionId) return { error: 'NOT_FOUND' };

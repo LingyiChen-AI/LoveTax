@@ -17,7 +17,7 @@ npm run seed:admin                                # optional
 npm run dev
 ```
 
-Open http://localhost:3000. Emails land in http://localhost:8025 (Mailpit).
+Open http://localhost:30001. Emails land in http://localhost:8025 (Mailpit).
 
 ## Tests
 

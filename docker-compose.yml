@@ -32,7 +32,7 @@ services:
       SEED_ADMIN_PASSWORD: ${SEED_ADMIN_PASSWORD:-}
       TRUST_PROXY: ${TRUST_PROXY:-true}
       NODE_ENV: production
-    ports: ['${PORT:-3000}:3000']
+    ports: ['${PORT:-30001}:30001']
 
 volumes:
   pgdata:

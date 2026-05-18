@@ -8,7 +8,7 @@ process.env.AUTH_SECRET ??= 'test-secret-test-secret-test-secret';
 process.env.SMTP_HOST ??= 'localhost';
 process.env.SMTP_PORT ??= '1026';
 process.env.SMTP_FROM ??= 'zchat <no-reply@test.local>';
-process.env.APP_URL ??= 'http://localhost:3000';
+process.env.APP_URL ??= 'http://localhost:30001';
 
 // Stub Next.js server-side APIs that require a request context
 vi.mock('next/cache', () => ({

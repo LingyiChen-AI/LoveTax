@@ -42,7 +42,7 @@ export async function inviteUserAction(formData: FormData): Promise<{ ok: true }
     });
   }
 
-  const appUrl = process.env.APP_URL ?? 'http://localhost:3000';
+  const appUrl = process.env.APP_URL ?? 'http://localhost:30001';
   const rendered = await renderInvite({
     inviterName: user.name,
     acceptUrl: `${appUrl}/invite/${token}`,

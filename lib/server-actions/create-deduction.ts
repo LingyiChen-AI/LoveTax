@@ -46,7 +46,7 @@ export async function createDeductionAction(input: { points: number; reason: str
   }).returning();
 
   const newRemaining = remaining - pointsToApply;
-  const appUrl = process.env.APP_URL ?? 'http://localhost:3000';
+  const appUrl = process.env.APP_URL ?? 'http://localhost:30001';
   const rendered = await renderDeduction({
     appUrl, fromName: me.name, toName: partner.displayName,
     points: pointsToApply, reason: parsed.data.reason, remaining: newRemaining

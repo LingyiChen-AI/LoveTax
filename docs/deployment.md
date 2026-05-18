@@ -35,7 +35,7 @@
 
 ```
 zchat.example.com {
-    reverse_proxy localhost:3000 {
+    reverse_proxy localhost:30001 {
         header_up X-Forwarded-For {remote_host}
         header_up X-Forwarded-Proto {scheme}
     }
