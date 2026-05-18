@@ -3,6 +3,7 @@ import Link from 'next/link';
 import type { ReactNode } from 'react';
 import { logoutAction } from '@/lib/server-actions/logout';
 import { LogOut } from 'lucide-react';
+import { Logo } from '@/components/logo';
 
 export default async function AdminLayout({ children }: { children: ReactNode }) {
   const me = await requireAdmin();
@@ -10,7 +11,7 @@ export default async function AdminLayout({ children }: { children: ReactNode })
     <>
       <header className="sticky top-0 z-30 bg-bg border-b-2 border-ink">
         <div className="max-w-3xl mx-auto px-3 py-2 flex items-center gap-2">
-          <Link href="/admin/users" className="font-black text-base shrink-0">⚙</Link>
+          <Link href="/admin/users" className="shrink-0"><Logo size="sm" showWordmark={false} /></Link>
           <nav className="flex gap-1.5 overflow-x-auto no-scrollbar -mx-1 px-1 flex-1">
             <Link href="/admin/users" className="neo-chip px-3 py-1.5 text-xs shrink-0 bg-paper">用户</Link>
             <Link href="/admin/couples" className="neo-chip px-3 py-1.5 text-xs shrink-0 bg-paper">情侣</Link>

@@ -2,6 +2,7 @@ import { acceptInviteAction } from '@/lib/server-actions/accept-invite';
 import { getOptionalUser } from '@/lib/auth/require-session';
 import { redirect } from 'next/navigation';
 import Link from 'next/link';
+import { Logo } from '@/components/logo';
 
 export default async function InvitePage({ params }: { params: { token: string } }) {
   const user = await getOptionalUser();
@@ -17,7 +18,8 @@ export default async function InvitePage({ params }: { params: { token: string }
   }
 
   return (
-    <main className="min-h-dvh flex items-center justify-center p-5">
+    <main className="min-h-dvh flex flex-col items-center justify-center gap-6 p-5">
+      <Logo size="lg" />
       <div className="w-full max-w-sm neo p-5 space-y-3">
         <h1 className="text-xl font-extrabold">接受邀请</h1>
         <p className="text-sm">点击下方按钮接受邀请,与邀请人配对。</p>

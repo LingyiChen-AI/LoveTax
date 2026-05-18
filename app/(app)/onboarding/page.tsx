@@ -4,6 +4,7 @@ import { db } from '@/lib/db/client';
 import { invitations } from '@/lib/db/schema';
 import { and, eq, gt } from 'drizzle-orm';
 import InviteForm from './invite-form';
+import { Logo } from '@/components/logo';
 
 export default async function Onboarding() {
   const user = await requireUser();
@@ -15,7 +16,8 @@ export default async function Onboarding() {
   ).limit(1);
 
   return (
-    <div className="space-y-4 mt-8">
+    <div className="space-y-4 mt-6">
+      <div className="flex justify-center mb-2"><Logo size="md" /></div>
       <div className="neo p-5">
         <h1 className="text-xl font-extrabold mb-2">欢迎,{user.name}</h1>
         <p className="text-sm text-muted">邀请你的伴侣加入,才能开始扣分对决。</p>
