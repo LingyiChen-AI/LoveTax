@@ -1,4 +1,5 @@
 import { cn } from '@/lib/utils';
+import { FeedItemReason } from './feed-item-reason';
 
 export interface FeedItemViewModel {
   id: string;
@@ -19,15 +20,13 @@ function timeOnly(d: Date) {
 export function FeedItem({ item, actions }: { item: FeedItemViewModel; actions?: React.ReactNode }) {
   return (
     <div className={cn(
-      'neo px-3 py-2 flex items-center gap-2 text-sm',
+      'neo px-3 py-2 flex items-start gap-2 text-sm',
       item.voided && 'opacity-50 line-through'
     )}>
-      <div className="text-xs text-muted shrink-0 w-12">{timeOnly(item.occurredAt)}</div>
+      <div className="text-xs text-muted shrink-0 w-12 pt-0.5">{timeOnly(item.occurredAt)}</div>
       <div className="font-extrabold text-danger shrink-0 w-12">-{item.points}</div>
-      <div className="flex-1 truncate">
-        <span className="text-muted">{item.fromName}→{item.toName}</span> · {item.reason}
-      </div>
-      {actions}
+      <FeedItemReason fromName={item.fromName} toName={item.toName} reason={item.reason} />
+      {actions && <div className="shrink-0 pt-0.5">{actions}</div>}
     </div>
   );
 }
