@@ -9,11 +9,14 @@ import { renderInvite } from '@/lib/email/render';
 import { sendWithRetry } from '@/lib/email/send-with-retry';
 import { requireUser } from '@/lib/auth/require-session';
 import { revalidatePath } from 'next/cache';
+import { checkAndIncrement, LIMITS } from '@/lib/rate-limit';
 
 const INVITE_TTL_DAYS = 7;
 
 export async function inviteUserAction(formData: FormData): Promise<{ ok: true } | { error: string }> {
   const user = await requireUser();
+  const rl = await checkAndIncrement({ key: `invite:${user.id}`, ...LIMITS.invite });
+  if (!rl.allowed) return { error: 'RATE_LIMITED' };
   if (user.coupleId) return { error: 'CONFLICT' };
 
   const parsed = inviteSchema.safeParse({ inviteeEmail: formData.get('inviteeEmail') });

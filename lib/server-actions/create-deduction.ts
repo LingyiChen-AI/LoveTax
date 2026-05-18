@@ -10,11 +10,14 @@ import { todayInTz } from '@/lib/date';
 import { renderDeduction } from '@/lib/email/render';
 import { sendWithRetry } from '@/lib/email/send-with-retry';
 import { revalidatePath } from 'next/cache';
+import { checkAndIncrement, LIMITS } from '@/lib/rate-limit';
 
 export async function createDeductionAction(input: { points: number; reason: string }): Promise<
   { ok: true; pointsApplied: number; remaining: number } | { error: string }
 > {
   const me = await requirePaired();
+  const rl = await checkAndIncrement({ key: `deduct:${me.id}`, ...LIMITS.deduct });
+  if (!rl.allowed) return { error: 'RATE_LIMITED' };
   const parsed = createDeductionSchema.safeParse(input);
   if (!parsed.success) return { error: parsed.error.issues[0]?.message ?? 'INVALID_INPUT' };
 

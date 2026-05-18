@@ -8,10 +8,16 @@ import { registerSchema } from '@/lib/validation/schemas';
 import { signIn } from '@/lib/auth';
 import { AppError } from '@/lib/errors';
 import { redirect } from 'next/navigation';
+import { checkAndIncrement, LIMITS } from '@/lib/rate-limit';
+import { getClientIp } from '@/lib/ip';
 
 export type RegisterState = { error?: string } | null;
 
 export async function registerAction(_prev: RegisterState, formData: FormData): Promise<RegisterState> {
+  const ip = getClientIp();
+  const rl = await checkAndIncrement({ key: `register:${ip}`, ...LIMITS.register });
+  if (!rl.allowed) return { error: 'RATE_LIMITED' };
+
   const parsed = registerSchema.safeParse({
     email: formData.get('email'),
     password: formData.get('password'),
