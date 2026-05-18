@@ -7,7 +7,7 @@ import { users } from '@/lib/db/schema';
 import { loginSchema } from '@/lib/validation/schemas';
 
 export const authConfig: NextAuthConfig = {
-  session: { strategy: 'jwt', maxAge: 60 * 60 * 24 * 30 },
+  session: { strategy: 'jwt', maxAge: 60 * 60 * 24 * 90 },
   pages: { signIn: '/login' },
   providers: [
     Credentials({
