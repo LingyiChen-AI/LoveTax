@@ -26,7 +26,13 @@ describe('email failure tolerance', () => {
     const rows = await db.select().from(deductions);
     expect(rows).toHaveLength(1);
 
-    const logs = await db.select().from(emailLog);
+    // Email is fire-and-forget; poll until email_log row appears (max ~2s)
+    let logs: typeof emailLog.$inferSelect[] = [];
+    for (let i = 0; i < 20; i++) {
+      logs = await db.select().from(emailLog);
+      if (logs.length > 0) break;
+      await new Promise((r) => setTimeout(r, 100));
+    }
     expect(logs).toHaveLength(1);
     expect(logs[0].status).toBe('failed');
     expect(logs[0].error).toContain('SMTP DOWN');

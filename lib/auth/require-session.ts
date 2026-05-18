@@ -1,6 +1,9 @@
 import { redirect } from 'next/navigation';
+import { eq } from 'drizzle-orm';
 import { auth } from './index';
 import { AppError } from '@/lib/errors';
+import { db } from '@/lib/db/client';
+import { users } from '@/lib/db/schema';
 
 export type SessionUser = {
   id: string;
@@ -14,14 +17,18 @@ export type SessionUser = {
 async function getSessionUser(): Promise<SessionUser | null> {
   const session = await auth();
   if (!session?.user) return null;
-  const u = session.user as any;
+  const sessUser = session.user as any;
+  // Re-read from DB so coupleId/role/mustChangePassword reflect latest state
+  // This eliminates JWT staleness after pairing, password reset, etc.
+  const [row] = await db.select().from(users).where(eq(users.id, sessUser.id)).limit(1);
+  if (!row) return null;
   return {
-    id: u.id,
-    email: u.email,
-    name: u.name,
-    role: u.role,
-    coupleId: u.coupleId ?? null,
-    mustChangePassword: !!u.mustChangePassword
+    id: row.id,
+    email: row.email,
+    name: row.displayName,
+    role: row.role,
+    coupleId: row.coupleId ?? null,
+    mustChangePassword: row.mustChangePassword
   };
 }
 

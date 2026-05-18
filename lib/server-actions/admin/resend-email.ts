@@ -30,11 +30,12 @@ export async function adminResendEmail(logId: string): Promise<{ ok: true } | { 
     return { error: 'CONFLICT' };
   }
 
-  await sendWithRetry({
+  // Fire-and-forget; sendWithRetry never throws (logs failures to email_log)
+  sendWithRetry({
     to: log.toEmail, subject: log.subject,
     html: payload.html, text: payload.text,
     type: log.type, deductionId: log.deductionId
-  });
+  }).catch(() => {});
   revalidatePath('/admin/email-failures');
   return { ok: true };
 }

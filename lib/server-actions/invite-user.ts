@@ -48,13 +48,14 @@ export async function inviteUserAction(formData: FormData): Promise<{ ok: true }
     acceptUrl: `${appUrl}/invite/${token}`,
     expiresInDays: INVITE_TTL_DAYS
   });
-  await sendWithRetry({
+  // Fire-and-forget; sendWithRetry never throws (logs failures to email_log)
+  sendWithRetry({
     to: parsed.data.inviteeEmail,
     subject: `[zchat] ${user.name} 邀请你加入 zchat`,
     html: rendered.html,
     text: rendered.text,
     type: 'invite'
-  });
+  }).catch(() => {});
   revalidatePath('/onboarding');
   return { ok: true };
 }

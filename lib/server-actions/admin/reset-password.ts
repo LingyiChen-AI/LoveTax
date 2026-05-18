@@ -32,13 +32,14 @@ export async function adminResetPassword(userId: string): Promise<{ ok: true } |
 
   const appUrl = process.env.APP_URL ?? 'http://localhost:3000';
   const rendered = await renderPasswordReset({ appUrl, email: user.email, tempPassword: temp });
-  await sendWithRetry({
+  // Fire-and-forget; sendWithRetry never throws (logs failures to email_log)
+  sendWithRetry({
     to: user.email,
     subject: '[zchat] 你的临时密码',
     html: rendered.html,
     text: rendered.text,
     type: 'password_reset'
-  });
+  }).catch(() => {});
 
   revalidatePath('/admin/users');
   return { ok: true };

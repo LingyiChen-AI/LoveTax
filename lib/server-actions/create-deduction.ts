@@ -51,14 +51,15 @@ export async function createDeductionAction(input: { points: number; reason: str
     appUrl, fromName: me.name, toName: partner.displayName,
     points: pointsToApply, reason: parsed.data.reason, remaining: newRemaining
   });
-  await sendWithRetry({
+  // Fire-and-forget; sendWithRetry never throws (logs failures to email_log)
+  sendWithRetry({
     to: partner.email,
     subject: `[zchat] Ta 给你扣了 ${pointsToApply} 分 — ${parsed.data.reason.slice(0, 40)}`,
     html: rendered.html,
     text: rendered.text,
     type: 'deduction',
     deductionId: row.id
-  });
+  }).catch(() => {});
 
   revalidatePath('/home');
   return { ok: true, pointsApplied: pointsToApply, remaining: newRemaining };

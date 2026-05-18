@@ -40,12 +40,9 @@ test('golden path: register A → invite B → B accepts → A deducts → email
   await pageB.click('button:has-text("接受邀请")');
   await pageB.waitForURL('**/home');
 
-  // A's JWT was issued before pairing; clear cookies and re-login so the session has coupleId
-  await ctxA.clearCookies();
-  await pageA.goto('/login');
-  await pageA.fill('input[name=email]', 'a@t.local');
-  await pageA.fill('input[name=password]', 'Password1!');
-  await pageA.click('button[type=submit]');
+  // DB-backed session: A's coupleId is now read fresh from DB on every request,
+  // so no re-login needed after B accepts.
+  await pageA.goto('/home');
   await pageA.waitForURL('**/home');
 
   await expect(pageA.locator('text=VS')).toBeVisible();
