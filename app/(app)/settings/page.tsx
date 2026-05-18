@@ -3,7 +3,8 @@ import { db } from '@/lib/db/client';
 import { users } from '@/lib/db/schema';
 import { eq } from 'drizzle-orm';
 import Link from 'next/link';
-import { updateSettingsAction, SUPPORTED_TIMEZONES } from '@/lib/server-actions/update-settings';
+import { updateSettingsAction } from '@/lib/server-actions/update-settings';
+import { SUPPORTED_TIMEZONES } from '@/lib/timezones';
 import { logoutAction } from '@/lib/server-actions/logout';
 
 export default async function Settings() {
