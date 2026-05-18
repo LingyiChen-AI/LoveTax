@@ -9,7 +9,7 @@ export default defineConfig({
     environment: 'node',
     globals: false,
     sequence: { concurrent: false },
-    singleThread: true,
+    fileParallelism: false,
     passWithNoTests: true,
     setupFiles: ['tests/integration/helpers/setup.ts'],
     testTimeout: 20000,
