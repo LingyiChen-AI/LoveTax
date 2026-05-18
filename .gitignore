@@ -10,3 +10,7 @@ dist/
 build/
 coverage/
 .vercel/
+next-env.d.ts
+tsconfig.tsbuildinfo
+test-results/
+playwright-report/
