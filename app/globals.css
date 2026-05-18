@@ -1,1 +1,30 @@
-/* Global styles - to be populated by Task 2 */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html, body { background: theme(colors.bg); color: theme(colors.ink); font-weight: 600; }
+  body { min-height: 100dvh; }
+  input, textarea, button { font-weight: 700; }
+}
+
+@layer components {
+  .neo {
+    @apply bg-paper border-[2.5px] border-ink rounded-card shadow-neo;
+  }
+  .neo-input {
+    @apply bg-paper border-2 border-ink rounded-chip px-3 py-2 outline-none focus:shadow-neo-sm;
+  }
+  .neo-chip {
+    @apply bg-paper border-2 border-ink rounded-chip py-2.5 text-center font-extrabold cursor-pointer;
+  }
+  .neo-chip[data-active='true'] {
+    @apply bg-accent shadow-neo-sm;
+  }
+  .neo-btn-primary {
+    @apply bg-accent text-ink border-[2.5px] border-ink rounded-card shadow-neo py-3 px-4 font-extrabold uppercase tracking-wider;
+  }
+  .neo-btn-danger {
+    @apply bg-danger text-white border-[2.5px] border-ink rounded-card shadow-neo py-3 px-4 font-extrabold tracking-wider;
+  }
+}
