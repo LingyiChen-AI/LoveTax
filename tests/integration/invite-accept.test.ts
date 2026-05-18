@@ -3,8 +3,11 @@ import { mockEmailTransport, sentEmails, clearSentEmails } from './helpers/email
 mockEmailTransport();
 
 import { truncateAll, createUser, createCouple, db, invitations } from './helpers/db';
-import { eq } from 'drizzle-orm';
+import { eq, sql } from 'drizzle-orm';
 import { inviteUserAction } from '@/lib/server-actions/invite-user';
+import { acceptInviteAction } from '@/lib/server-actions/accept-invite';
+import { generateInviteToken } from '@/lib/invite-token';
+import { users as usersT } from '@/lib/db/schema';
 
 // Stub session
 import * as session from '@/lib/auth/require-session';
@@ -58,5 +61,71 @@ describe('inviteUserAction', () => {
     fd.set('inviteeEmail', 'not-email');
     const res = await inviteUserAction(fd);
     expect(res).toEqual({ error: 'INVALID_EMAIL' });
+  });
+});
+
+describe('acceptInviteAction', () => {
+  beforeEach(async () => { await truncateAll(); vi.restoreAllMocks(); });
+
+  it('pairs both users on accept', async () => {
+    const A = await createUser({ email: 'a@t.local', displayName: 'A' });
+    const B = await createUser({ email: 'b@t.local', displayName: 'B' });
+    const token = generateInviteToken();
+    await db.insert(invitations).values({
+      inviterUserId: A.id, inviteeEmail: 'b@t.local', token,
+      status: 'pending', expiresAt: new Date(Date.now() + 86400_000)
+    });
+    vi.spyOn(session, 'requireUser').mockResolvedValue({
+      id: B.id, email: B.email, name: B.displayName, role: 'user', coupleId: null, mustChangePassword: false
+    });
+    const res = await acceptInviteAction(token);
+    expect('ok' in res && res.ok).toBe(true);
+
+    const [a2] = await db.select().from(usersT).where(sql`id=${A.id}`);
+    const [b2] = await db.select().from(usersT).where(sql`id=${B.id}`);
+    expect(a2.coupleId).toBeTruthy();
+    expect(a2.coupleId).toBe(b2.coupleId);
+    const [inv] = await db.select().from(invitations).where(sql`token=${token}`);
+    expect(inv.status).toBe('accepted');
+  });
+
+  it('rejects expired invite', async () => {
+    const A = await createUser({ email: 'a@t.local' });
+    const B = await createUser({ email: 'b@t.local' });
+    const token = generateInviteToken();
+    await db.insert(invitations).values({
+      inviterUserId: A.id, inviteeEmail: 'b@t.local', token,
+      status: 'pending', expiresAt: new Date(Date.now() - 1000)
+    });
+    vi.spyOn(session, 'requireUser').mockResolvedValue({ id: B.id, email: B.email, name: B.displayName, role: 'user', coupleId: null, mustChangePassword: false });
+    const res = await acceptInviteAction(token);
+    expect(res).toEqual({ error: 'INVITE_INVALID' });
+  });
+
+  it('rejects email mismatch', async () => {
+    const A = await createUser({ email: 'a@t.local' });
+    const B = await createUser({ email: 'wrong@t.local' });
+    const token = generateInviteToken();
+    await db.insert(invitations).values({
+      inviterUserId: A.id, inviteeEmail: 'b@t.local', token,
+      status: 'pending', expiresAt: new Date(Date.now() + 86400_000)
+    });
+    vi.spyOn(session, 'requireUser').mockResolvedValue({ id: B.id, email: B.email, name: B.displayName, role: 'user', coupleId: null, mustChangePassword: false });
+    const res = await acceptInviteAction(token);
+    expect(res).toEqual({ error: 'INVITE_INVALID' });
+  });
+
+  it('rejects when accepter already paired', async () => {
+    const couple = await createCouple();
+    const A = await createUser({ email: 'a@t.local' });
+    const B = await createUser({ email: 'b@t.local', coupleId: couple.id });
+    const token = generateInviteToken();
+    await db.insert(invitations).values({
+      inviterUserId: A.id, inviteeEmail: 'b@t.local', token,
+      status: 'pending', expiresAt: new Date(Date.now() + 86400_000)
+    });
+    vi.spyOn(session, 'requireUser').mockResolvedValue({ id: B.id, email: B.email, name: B.displayName, role: 'user', coupleId: couple.id, mustChangePassword: false });
+    const res = await acceptInviteAction(token);
+    expect(res).toEqual({ error: 'ALREADY_PAIRED' });
   });
 });
