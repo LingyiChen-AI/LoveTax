@@ -18,7 +18,7 @@ export default function VoidTpl({ appUrl, fromName, toName, points, reason, rema
           <Heading style={{ margin: 0, fontSize: 20 }}>{toName},{fromName} 撤销了一次扣分</Heading>
           <Text>撤销内容: -{points} · {reason}</Text>
           <Text style={{ fontSize: 24, color: '#10B981', fontWeight: 800 }}>{`你今日剩余 ${remaining}/100`}</Text>
-          <Button href={appUrl} style={{ background: '#FBBF24', padding: '12px 16px', borderRadius: 12, border: '2.5px solid #1F2937', fontWeight: 800, color: '#1F2937', textDecoration: 'none' }}>打开 zchat</Button>
+          <Button href={appUrl} style={{ background: '#FBBF24', padding: '12px 16px', borderRadius: 12, border: '2.5px solid #1F2937', fontWeight: 800, color: '#1F2937', textDecoration: 'none' }}>打开 LoveTax</Button>
         </Container>
       </Body>
     </Html>

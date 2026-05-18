@@ -1,6 +1,6 @@
-# zchat
+# LoveTax · 爱情税
 
-A self-hosted couples daily-deduction web app.
+A self-hosted couples daily-deduction web app. Each partner starts the day with 100 points; the other deducts when displeased (with a reason). Every deduction emails the recipient.
 
 - See `docs/superpowers/specs/2026-05-18-couples-app-design.md` for the design spec.
 - See `docs/superpowers/plans/2026-05-18-couples-app.md` for the implementation plan.

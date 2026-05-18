@@ -51,7 +51,7 @@ export async function inviteUserAction(formData: FormData): Promise<{ ok: true }
   // Fire-and-forget; sendWithRetry never throws (logs failures to email_log)
   sendWithRetry({
     to: parsed.data.inviteeEmail,
-    subject: `[zchat] ${user.name} 邀请你加入 zchat`,
+    subject: `[LoveTax] ${user.name} 邀请你加入 LoveTax`,
     html: rendered.html,
     text: rendered.text,
     type: 'invite'

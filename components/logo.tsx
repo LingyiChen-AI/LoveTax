@@ -21,7 +21,7 @@ export function Logo({ size = 'md', showWordmark = true, className }: LogoProps)
         height={dim.box}
         viewBox="0 0 96 96"
         xmlns="http://www.w3.org/2000/svg"
-        aria-label="zchat logo"
+        aria-label="LoveTax logo"
       >
         {/* Hard offset shadow */}
         <rect x="11" y="11" width="80" height="80" rx="14" fill="#1F2937" />
@@ -47,7 +47,7 @@ export function Logo({ size = 'md', showWordmark = true, className }: LogoProps)
       </svg>
       {showWordmark && (
         <span className={cn(dim.text, 'font-black tracking-tight leading-none')}>
-          zchat
+          LoveTax
         </span>
       )}
     </div>

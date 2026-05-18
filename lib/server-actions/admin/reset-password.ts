@@ -35,7 +35,7 @@ export async function adminResetPassword(userId: string): Promise<{ ok: true } |
   // Fire-and-forget; sendWithRetry never throws (logs failures to email_log)
   sendWithRetry({
     to: user.email,
-    subject: '[zchat] 你的临时密码',
+    subject: '[LoveTax] 你的临时密码',
     html: rendered.html,
     text: rendered.text,
     type: 'password_reset'

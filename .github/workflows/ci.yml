@@ -7,22 +7,22 @@ jobs:
       postgres:
         image: postgres:16-alpine
         env:
-          POSTGRES_USER: zchat
-          POSTGRES_PASSWORD: zchat
-          POSTGRES_DB: zchat_test
+          POSTGRES_USER: lovetax
+          POSTGRES_PASSWORD: lovetax
+          POSTGRES_DB: lovetax_test
         ports: ['5433:5432']
-        options: --health-cmd="pg_isready -U zchat" --health-interval=5s --health-timeout=5s --health-retries=10
+        options: --health-cmd="pg_isready -U lovetax" --health-interval=5s --health-timeout=5s --health-retries=10
       mailpit:
         image: axllent/mailpit:latest
         ports: ['1026:1025', '8026:8025']
     env:
-      DATABASE_URL: postgres://zchat:zchat@localhost:5433/zchat_test
+      DATABASE_URL: postgres://lovetax:lovetax@localhost:5433/lovetax_test
       AUTH_SECRET: ci-secret-ci-secret-ci-secret-ci
       AUTH_URL: http://localhost:30001
       APP_URL: http://localhost:30001
       SMTP_HOST: localhost
       SMTP_PORT: '1026'
-      SMTP_FROM: zchat <no-reply@test.local>
+      SMTP_FROM: LoveTax <no-reply@test.local>
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4

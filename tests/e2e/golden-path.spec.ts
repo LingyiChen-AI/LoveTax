@@ -2,7 +2,7 @@ import { test, expect } from '@playwright/test';
 import { waitForMailpitMessage, clearMailpit } from './helpers/mailpit';
 import postgres from 'postgres';
 
-const dbUrl = 'postgres://zchat:zchat@localhost:5433/zchat_test';
+const dbUrl = 'postgres://lovetax:lovetax@localhost:5433/lovetax_test';
 
 test.beforeAll(async () => {
   const sql = postgres(dbUrl);

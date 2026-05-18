@@ -9,13 +9,13 @@
    ```
    POSTGRES_PASSWORD=<strong random>
    AUTH_SECRET=<openssl rand -base64 32>
-   AUTH_URL=https://zchat.example.com
-   APP_URL=https://zchat.example.com
+   AUTH_URL=https://lovetax.example.com
+   APP_URL=https://lovetax.example.com
    SMTP_HOST=smtp.gmail.com
    SMTP_PORT=587
    SMTP_USER=your-account@gmail.com
    SMTP_PASS=<app password>
-   SMTP_FROM=zchat <no-reply@example.com>
+   SMTP_FROM=LoveTax <no-reply@example.com>
    SEED_ADMIN_EMAIL=admin@example.com
    SEED_ADMIN_PASSWORD=<temp; change immediately>
    TRUST_PROXY=true
@@ -34,7 +34,7 @@
 `/etc/caddy/Caddyfile`:
 
 ```
-zchat.example.com {
+lovetax.example.com {
     reverse_proxy localhost:30001 {
         header_up X-Forwarded-For {remote_host}
         header_up X-Forwarded-Proto {scheme}
@@ -49,7 +49,7 @@ Run: `sudo systemctl reload caddy`
 Cron entry (`crontab -e`):
 
 ```
-15 3 * * * docker exec zchat-db-1 pg_dump -U zchat zchat | gzip > /var/backups/zchat-$(date +\%F).sql.gz
+15 3 * * * docker exec lovetax-db-1 pg_dump -U lovetax lovetax | gzip > /var/backups/lovetax-$(date +\%F).sql.gz
 ```
 
 Sync to remote storage (rclone / restic / etc.) on the same schedule.

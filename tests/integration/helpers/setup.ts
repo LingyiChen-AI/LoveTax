@@ -3,11 +3,11 @@ import postgres from 'postgres';
 import { drizzle } from 'drizzle-orm/postgres-js';
 import { migrate } from 'drizzle-orm/postgres-js/migrator';
 
-process.env.DATABASE_URL ??= 'postgres://zchat:zchat@localhost:5433/zchat_test';
+process.env.DATABASE_URL ??= 'postgres://lovetax:lovetax@localhost:5433/lovetax_test';
 process.env.AUTH_SECRET ??= 'test-secret-test-secret-test-secret';
 process.env.SMTP_HOST ??= 'localhost';
 process.env.SMTP_PORT ??= '1026';
-process.env.SMTP_FROM ??= 'zchat <no-reply@test.local>';
+process.env.SMTP_FROM ??= 'LoveTax <no-reply@test.local>';
 process.env.APP_URL ??= 'http://localhost:30001';
 
 // Stub Next.js server-side APIs that require a request context

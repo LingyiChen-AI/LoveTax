@@ -54,7 +54,7 @@ export async function createDeductionAction(input: { points: number; reason: str
   // Fire-and-forget; sendWithRetry never throws (logs failures to email_log)
   sendWithRetry({
     to: partner.email,
-    subject: `[zchat] Ta 给你扣了 ${pointsToApply} 分 — ${parsed.data.reason.slice(0, 40)}`,
+    subject: `[LoveTax] Ta 给你扣了 ${pointsToApply} 分 — ${parsed.data.reason.slice(0, 40)}`,
     html: rendered.html,
     text: rendered.text,
     type: 'deduction',

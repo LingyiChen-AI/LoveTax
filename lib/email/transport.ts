@@ -19,5 +19,5 @@ export function getTransport(): Transporter {
 }
 
 export function emailFrom(): string {
-  return process.env.SMTP_FROM ?? 'zchat <no-reply@zchat.local>';
+  return process.env.SMTP_FROM ?? 'LoveTax <no-reply@lovetax.local>';
 }

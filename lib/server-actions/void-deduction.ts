@@ -44,7 +44,7 @@ export async function voidDeductionAction(input: { id: string; reason?: string }
   // Fire-and-forget; sendWithRetry never throws (logs failures to email_log)
   sendWithRetry({
     to: partner.email,
-    subject: `[zchat] Ta 撤销了一次扣分`,
+    subject: `[LoveTax] Ta 撤销了一次扣分`,
     html: rendered.html,
     text: rendered.text,
     type: 'void',
