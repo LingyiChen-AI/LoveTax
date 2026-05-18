@@ -1,26 +1,9 @@
 services:
-  db:
-    image: postgres:16-alpine
-    restart: unless-stopped
-    environment:
-      POSTGRES_USER: zchat
-      POSTGRES_PASSWORD: zchat
-      POSTGRES_DB: zchat
-    ports:
-      - '5434:5432'
-    volumes: ['pgdata:/var/lib/postgresql/data']
-    healthcheck:
-      test: ['CMD-SHELL', 'pg_isready -U zchat']
-      interval: 5s
-      timeout: 5s
-      retries: 10
-
+  # Postgres reuses an externally-managed container (e.g. `postgres-17` on host 5432).
+  # See `.env` DATABASE_URL.
   mailpit:
     image: axllent/mailpit:latest
     restart: unless-stopped
     ports:
       - '1025:1025'  # SMTP
       - '8025:8025'  # web UI
-
-volumes:
-  pgdata:
