@@ -41,7 +41,10 @@ export async function requireUser(): Promise<SessionUser> {
 
 export async function requirePaired(): Promise<SessionUser & { coupleId: string }> {
   const u = await requireUser();
-  if (!u.coupleId) redirect('/onboarding');
+  if (!u.coupleId) {
+    // Admins don't need a partner; route them to the admin panel instead.
+    redirect(u.role === 'admin' ? '/admin/users' : '/onboarding');
+  }
   return u as SessionUser & { coupleId: string };
 }
 

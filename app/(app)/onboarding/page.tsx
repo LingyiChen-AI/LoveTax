@@ -7,6 +7,7 @@ import InviteForm from './invite-form';
 
 export default async function Onboarding() {
   const user = await requireUser();
+  if (user.role === 'admin') redirect('/admin/users');
   if (user.coupleId) redirect('/home');
 
   const pending = await db.select().from(invitations).where(

@@ -5,6 +5,7 @@ export default async function Index() {
   const user = await getOptionalUser();
   if (!user) redirect('/login');
   if (user.mustChangePassword) redirect('/change-password');
+  if (user.role === 'admin') redirect('/admin/users');
   if (!user.coupleId) redirect('/onboarding');
   redirect('/home');
 }

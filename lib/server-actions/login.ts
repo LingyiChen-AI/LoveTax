@@ -28,5 +28,7 @@ export async function loginAction(_prev: LoginState, formData: FormData): Promis
   } catch (e) {
     return { error: 'INVALID_CREDENTIALS' };
   }
-  redirect('/home');
+  // Let the root route handler decide where to send the user
+  // (admin → /admin/users, paired → /home, unpaired → /onboarding).
+  redirect('/');
 }
