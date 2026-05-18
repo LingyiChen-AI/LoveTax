@@ -1,4 +1,4 @@
-import { beforeAll } from 'vitest';
+import { beforeAll, vi } from 'vitest';
 import postgres from 'postgres';
 import { drizzle } from 'drizzle-orm/postgres-js';
 import { migrate } from 'drizzle-orm/postgres-js/migrator';
@@ -9,6 +9,13 @@ process.env.SMTP_HOST ??= 'localhost';
 process.env.SMTP_PORT ??= '1026';
 process.env.SMTP_FROM ??= 'zchat <no-reply@test.local>';
 process.env.APP_URL ??= 'http://localhost:3000';
+
+// Stub Next.js server-side APIs that require a request context
+vi.mock('next/cache', () => ({
+  revalidatePath: vi.fn(),
+  revalidateTag: vi.fn(),
+  unstable_cache: vi.fn((fn: (...args: unknown[]) => unknown) => fn)
+}));
 
 beforeAll(async () => {
   const sql = postgres(process.env.DATABASE_URL!, { max: 1 });
