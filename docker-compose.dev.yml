@@ -6,7 +6,8 @@ services:
       POSTGRES_USER: zchat
       POSTGRES_PASSWORD: zchat
       POSTGRES_DB: zchat
-    ports: ['5432:5432']
+    ports:
+      - '5432:5432'
     volumes: ['pgdata:/var/lib/postgresql/data']
     healthcheck:
       test: ['CMD-SHELL', 'pg_isready -U zchat']
