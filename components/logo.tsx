@@ -24,11 +24,11 @@ export function Logo({ size = 'md', showWordmark = true, className }: LogoProps)
         aria-label="zchat logo"
       >
         {/* Hard offset shadow */}
-        <rect x="9" y="9" width="80" height="80" rx="14" fill="#1F2937" />
+        <rect x="11" y="11" width="80" height="80" rx="14" fill="#1F2937" />
         {/* Yellow card */}
         <rect
-          x="3"
-          y="3"
+          x="5"
+          y="5"
           width="80"
           height="80"
           rx="14"
@@ -38,12 +38,12 @@ export function Logo({ size = 'md', showWordmark = true, className }: LogoProps)
         />
         {/* Ink-black heart */}
         <path
-          d="M43 65 C31 57 19 48 19 37 C19 28 27 23 34 26 C39 28 42 32 43 36 C44 32 47 28 52 26 C59 23 67 28 67 37 C67 48 55 57 43 65 Z"
+          d="M45 67 C33 59 21 50 21 39 C21 30 29 25 36 28 C41 30 44 34 45 38 C46 34 49 30 54 28 C61 25 69 30 69 39 C69 50 57 59 45 67 Z"
           fill="#1F2937"
           strokeLinejoin="round"
         />
         {/* White minus bar (the "deduction") slicing across the heart */}
-        <rect x="25" y="39" width="36" height="7" rx="1.5" fill="#FFFFFF" />
+        <rect x="27" y="41" width="36" height="7" rx="1.5" fill="#FFFFFF" />
       </svg>
       {showWordmark && (
         <span className={cn(dim.text, 'font-black tracking-tight leading-none')}>
