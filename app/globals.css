@@ -8,6 +8,11 @@
   input, textarea, button { font-weight: 700; }
 }
 
+@layer utilities {
+  .no-scrollbar { scrollbar-width: none; -ms-overflow-style: none; }
+  .no-scrollbar::-webkit-scrollbar { display: none; }
+}
+
 @layer components {
   .neo {
     @apply bg-paper border-[2.5px] border-ink rounded-card shadow-neo;
