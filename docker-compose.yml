@@ -1,0 +1,38 @@
+services:
+  db:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-zchat}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?password required}
+      POSTGRES_DB: ${POSTGRES_DB:-zchat}
+    volumes: ['pgdata:/var/lib/postgresql/data']
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U $${POSTGRES_USER:-zchat}']
+      interval: 10s
+      timeout: 5s
+      retries: 6
+
+  web:
+    build: .
+    restart: unless-stopped
+    depends_on:
+      db: { condition: service_healthy }
+    environment:
+      DATABASE_URL: postgres://${POSTGRES_USER:-zchat}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB:-zchat}
+      AUTH_SECRET: ${AUTH_SECRET:?secret required}
+      AUTH_URL: ${AUTH_URL:?required}
+      APP_URL: ${APP_URL:?required}
+      SMTP_HOST: ${SMTP_HOST:?required}
+      SMTP_PORT: ${SMTP_PORT:-587}
+      SMTP_USER: ${SMTP_USER:-}
+      SMTP_PASS: ${SMTP_PASS:-}
+      SMTP_FROM: ${SMTP_FROM:-zchat <no-reply@zchat.local>}
+      SEED_ADMIN_EMAIL: ${SEED_ADMIN_EMAIL:-}
+      SEED_ADMIN_PASSWORD: ${SEED_ADMIN_PASSWORD:-}
+      TRUST_PROXY: ${TRUST_PROXY:-true}
+      NODE_ENV: production
+    ports: ['${PORT:-3000}:3000']
+
+volumes:
+  pgdata:
