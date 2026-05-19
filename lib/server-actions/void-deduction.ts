@@ -7,7 +7,7 @@ import { voidDeductionSchema } from '@/lib/validation/schemas';
 import { requirePaired } from '@/lib/auth/require-session';
 import { todayInTz } from '@/lib/date';
 import { DAILY_MAX } from '@/lib/score';
-import { renderVoid } from '@/lib/email/render';
+import { renderVoid, renderBonusVoid } from '@/lib/email/render';
 import { sendWithRetry } from '@/lib/email/send-with-retry';
 import { revalidatePath } from 'next/cache';
 
@@ -37,17 +37,23 @@ export async function voidDeductionAction(input: { id: string; reason?: string }
   const remaining = Math.max(0, DAILY_MAX - Number(agg?.s ?? 0));
 
   const appUrl = process.env.APP_URL ?? 'http://localhost:30001';
-  const rendered = await renderVoid({
-    appUrl, fromName: me.name, toName: partner.displayName,
-    points: row.points, reason: row.reason, remaining
-  });
+  const isBonus = row.kind === 'bonus';
+  const rendered = isBonus
+    ? await renderBonusVoid({
+        appUrl, fromName: me.name, toName: partner.displayName,
+        points: row.points, reason: row.reason, remaining
+      })
+    : await renderVoid({
+        appUrl, fromName: me.name, toName: partner.displayName,
+        points: row.points, reason: row.reason, remaining
+      });
   // Fire-and-forget; sendWithRetry never throws (logs failures to email_log)
   sendWithRetry({
     to: partner.email,
-    subject: `[LoveTax] Ta 撤销了一次扣分`,
+    subject: isBonus ? `[LoveTax] Ta 撤销了一次夸奖` : `[LoveTax] Ta 撤销了一次扣分`,
     html: rendered.html,
     text: rendered.text,
-    type: 'void',
+    type: isBonus ? 'bonus_void' : 'void',
     deductionId: row.id
   }).catch(() => {});
 
