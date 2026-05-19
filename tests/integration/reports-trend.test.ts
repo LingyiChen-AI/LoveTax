@@ -2,6 +2,7 @@ import { beforeEach, describe, it, expect } from 'vitest';
 import { truncateAll, createUser, createCouple, db, deductions } from './helpers/db';
 import { todayInTz, daysAgo } from '@/lib/date';
 import { getTrend } from '@/lib/reports/trend';
+import { deductions as deductionsT } from '@/lib/db/schema';
 
 describe('getTrend', () => {
   beforeEach(async () => { await truncateAll(); });
@@ -39,5 +40,23 @@ describe('getTrend', () => {
     const yPt = pts[pts.length - 2];
     expect(yPt.date).toBe(y);
     expect(yPt.meRemaining).toBe(100);
+  });
+});
+
+describe('getTrend with bonus', () => {
+  beforeEach(async () => { await truncateAll(); });
+
+  it('bonus offsets deductions in today point', async () => {
+    const c = await createCouple();
+    const A = await createUser({ coupleId: c.id });
+    const B = await createUser({ coupleId: c.id });
+    const today = todayInTz('Asia/Shanghai');
+    await db.insert(deductionsT).values([
+      { coupleId: c.id, fromUserId: B.id, toUserId: A.id, points: 20, reason: 'x', occurredLocalDate: today, kind: 'deduct' },
+      { coupleId: c.id, fromUserId: B.id, toUserId: A.id, points: 5, reason: 'y', occurredLocalDate: today, kind: 'bonus' }
+    ]);
+    const pts = await getTrend(c.id, A.id, 'Asia/Shanghai', B.id, 'Asia/Shanghai', 7);
+    const todayP = pts[pts.length - 1];
+    expect(todayP.meRemaining).toBe(85); // 100 - 20 + 5
   });
 });
