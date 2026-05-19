@@ -3,6 +3,7 @@ import { getCoupleTodayView } from '@/lib/reports/today';
 import { db } from '@/lib/db/client';
 import { VsDisplay } from '@/components/vs-display';
 import { DeductSheet } from '@/components/deduct-sheet';
+import { PraiseSheet } from '@/components/praise-sheet';
 import { FeedList } from '@/components/feed-list';
 import type { FeedItemViewModel } from '@/components/feed-item';
 import { todayInTz } from '@/lib/date';
@@ -24,7 +25,8 @@ export default async function Home() {
     occurredAt: f.occurredAt,
     voided: !!f.voidedAt,
     isMine: f.fromUserId === me.id,
-    canVoid: f.fromUserId === me.id && !f.voidedAt && f.occurredLocalDate === today
+    canVoid: f.fromUserId === me.id && !f.voidedAt && f.occurredLocalDate === today,
+    kind: f.kind
   }));
 
   return (
@@ -35,7 +37,10 @@ export default async function Home() {
         partnerLabel={`Ta · ${partnerRow?.displayName ?? ''}`}
         partnerRemaining={view.partner.remaining}
       />
-      <DeductSheet partnerRemaining={view.partner.remaining} />
+      <div className="flex gap-2">
+        <div className="flex-1"><DeductSheet partnerRemaining={view.partner.remaining} /></div>
+        <div className="flex-1"><PraiseSheet partnerRemaining={view.partner.remaining} /></div>
+      </div>
       <div>
         <h2 className="text-xs font-extrabold tracking-widest uppercase mb-2">战报</h2>
         <FeedList items={items} />
