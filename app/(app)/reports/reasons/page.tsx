@@ -30,7 +30,7 @@ export default async function ReasonsPage({ searchParams }: { searchParams: { mo
           <a
             key={m.key}
             href={`/reports/reasons?mode=${m.key}`}
-            className={`neo-chip shrink-0 ${modeKey === m.key ? 'bg-pink-grad text-white' : ''}`}
+            className={`neo-chip shrink-0 ${modeKey === m.key ? 'bg-accent text-white' : ''}`}
           >
             {m.label}
           </a>

@@ -16,8 +16,8 @@ export default async function TrendPage({ searchParams }: { searchParams: { days
   return (
     <div className="space-y-3">
       <div className="flex gap-2">
-        <Link href="/reports/trend?days=7" className={`neo-chip flex-1 ${days === 7 ? 'bg-accent shadow-neo-sm' : ''}`}>7 天</Link>
-        <Link href="/reports/trend?days=30" className={`neo-chip flex-1 ${days === 30 ? 'bg-accent shadow-neo-sm' : ''}`}>30 天</Link>
+        <Link href="/reports/trend?days=7" className={`neo-chip flex-1 ${days === 7 ? 'bg-accent text-white' : ''}`}>7 天</Link>
+        <Link href="/reports/trend?days=30" className={`neo-chip flex-1 ${days === 30 ? 'bg-accent text-white' : ''}`}>30 天</Link>
       </div>
       <TrendChart data={data} meLabel={`我 · ${meRow.displayName}`} partnerLabel={`Ta · ${partner.displayName}`} />
     </div>

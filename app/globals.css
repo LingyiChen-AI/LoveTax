@@ -4,75 +4,50 @@
 
 @layer base {
   html, body {
-    background:
-      radial-gradient(circle at 15% 8%, rgba(255,182,239,0.45) 0%, transparent 45%),
-      radial-gradient(circle at 85% 92%, rgba(180,220,255,0.45) 0%, transparent 45%),
-      linear-gradient(180deg, #FFE6F4 0%, #E8F1FF 100%);
-    background-attachment: fixed;
+    background: theme(colors.bg);
     color: theme(colors.ink);
-    font-weight: 600;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
   body { min-height: 100dvh; }
-  input, textarea, button { font-weight: 700; }
 }
 
 @layer utilities {
   .no-scrollbar { scrollbar-width: none; -ms-overflow-style: none; }
   .no-scrollbar::-webkit-scrollbar { display: none; }
-
-  /* gradient text */
-  .text-pink-grad {
-    background: linear-gradient(135deg, #FF6FB5 0%, #C77DFF 100%);
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
-  }
-  .text-sky-grad {
-    background: linear-gradient(135deg, #6FB8FF 0%, #7DC8FF 100%);
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
-  }
 }
 
 @layer components {
-  /* Sticker card: white surface, thin white inner border, pink colored shadow */
+  /* Card: light gray surface, no border, no shadow */
   .neo {
-    @apply bg-paper rounded-card border-2 border-white shadow-neo;
-  }
-  .neo-blue {
-    @apply bg-paper rounded-card border-2 border-white shadow-neo-blue;
+    @apply bg-paper rounded-card;
   }
 
-  /* Input: pink-tinted border, focus pops with shadow */
+  /* Input: gray surface, no border, subtle focus ring */
   .neo-input {
-    @apply bg-paper border-2 rounded-chip px-3 py-2 outline-none transition;
-    border-color: #FFCDE8;
+    @apply bg-paper rounded-chip px-3 py-2.5 outline-none border border-transparent transition;
+    color: theme(colors.ink);
   }
   .neo-input:focus {
-    border-color: #FF6FB5;
-    box-shadow: 2px 2px 0 #FFB6E6;
+    border-color: theme(colors.accent);
   }
+  .neo-input::placeholder { color: theme(colors.muted); }
 
-  /* Chip (pill-button used in nav/tabs) */
+  /* Chip / pill button */
   .neo-chip {
-    @apply bg-paper border-2 border-white rounded-chip py-2 px-3 text-center font-extrabold cursor-pointer shadow-neo-sm text-ink transition;
+    @apply bg-paper rounded-chip py-2 px-3 text-center font-semibold cursor-pointer transition border border-transparent text-ink;
   }
-  .neo-chip[data-active='true'],
-  .neo-chip:hover {
-    @apply text-white border-white shadow-neo;
-    background: linear-gradient(135deg, #FF6FB5 0%, #C77DFF 100%);
+  .neo-chip[data-active='true'] {
+    @apply bg-accent text-white;
   }
 
-  /* Primary CTA: pink-purple gradient, white inner border, pink shadow */
+  /* Primary CTA: solid green */
   .neo-btn-primary {
-    @apply text-white rounded-card border-2 border-white shadow-neo py-3 px-4 font-extrabold tracking-wider transition active:translate-x-[1px] active:translate-y-[1px] active:shadow-neo-sm;
-    background: linear-gradient(135deg, #FF6FB5 0%, #C77DFF 100%);
-    letter-spacing: 0.1em;
+    @apply bg-accent text-white rounded-card py-3 px-4 font-semibold transition active:opacity-80 disabled:opacity-50;
   }
 
-  /* Danger CTA: solid pink-red */
+  /* Danger CTA: solid red */
   .neo-btn-danger {
-    @apply bg-danger text-white rounded-card border-2 border-white shadow-neo py-3 px-4 font-extrabold tracking-wider transition active:translate-x-[1px] active:translate-y-[1px] active:shadow-neo-sm;
+    @apply bg-danger text-white rounded-card py-3 px-4 font-semibold transition active:opacity-80 disabled:opacity-50;
   }
 }

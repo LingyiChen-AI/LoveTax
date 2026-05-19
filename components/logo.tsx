@@ -7,9 +7,9 @@ export interface LogoProps {
 }
 
 const SIZES = {
-  sm: { box: 28, gap: 'gap-1.5', text: 'text-base' },
-  md: { box: 44, gap: 'gap-2.5', text: 'text-2xl' },
-  lg: { box: 64, gap: 'gap-3', text: 'text-3xl' }
+  sm: { box: 28, gap: 'gap-2', text: 'text-base' },
+  md: { box: 40, gap: 'gap-2.5', text: 'text-xl' },
+  lg: { box: 56, gap: 'gap-3', text: 'text-2xl' }
 };
 
 export function Logo({ size = 'md', showWordmark = true, className }: LogoProps) {
@@ -19,31 +19,20 @@ export function Logo({ size = 'md', showWordmark = true, className }: LogoProps)
       <svg
         width={dim.box}
         height={dim.box}
-        viewBox="0 0 96 96"
+        viewBox="0 0 64 64"
         xmlns="http://www.w3.org/2000/svg"
         aria-label="LoveTax logo"
       >
-        <defs>
-          <linearGradient id="lt-heart" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stopColor="#FF6FB5" />
-            <stop offset="100%" stopColor="#C77DFF" />
-          </linearGradient>
-        </defs>
-        {/* Pink offset "sticker" shadow */}
-        <rect x="11" y="11" width="80" height="80" rx="20" fill="#FFB6E6" />
-        {/* White card with subtle outer stroke */}
-        <rect x="5" y="5" width="80" height="80" rx="20" fill="#FFFFFF" stroke="#FFCDE8" strokeWidth="2" />
-        {/* Gradient heart */}
+        {/* Rounded green app-icon style square */}
+        <rect x="2" y="2" width="60" height="60" rx="14" fill="#34C759" />
+        {/* White heart */}
         <path
-          d="M45 67 C33 59 21 50 21 39 C21 30 29 25 36 28 C41 30 44 34 45 38 C46 34 49 30 54 28 C61 25 69 30 69 39 C69 50 57 59 45 67 Z"
-          fill="url(#lt-heart)"
-          strokeLinejoin="round"
+          d="M32 48 C22 41 14 33 14 24 C14 18 19 14 24 16 C28 18 30 20 32 23 C34 20 36 18 40 16 C45 14 50 18 50 24 C50 33 42 41 32 48 Z"
+          fill="#FFFFFF"
         />
-        {/* White minus pill across heart */}
-        <rect x="27" y="42" width="36" height="6" rx="3" fill="#FFFFFF" />
       </svg>
       {showWordmark && (
-        <span className={cn(dim.text, 'font-black tracking-tight leading-none text-pink-grad')}>
+        <span className={cn(dim.text, 'font-semibold tracking-tight leading-none text-ink')}>
           LoveTax
         </span>
       )}

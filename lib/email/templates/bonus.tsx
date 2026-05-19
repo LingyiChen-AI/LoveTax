@@ -13,18 +13,18 @@ export default function Bonus({ appUrl, fromName, toName, points, reason, remain
   return (
     <Html>
       <Head />
-      <Body style={{ fontFamily: 'sans-serif', backgroundColor: '#E8F4FF', padding: 24 }}>
-        <Container style={{ background: '#FFFFFF', border: '2px solid #B4DCFF', borderRadius: 18, padding: 24, maxWidth: 480, boxShadow: '3px 3px 0 #B4DCFF' }}>
-          <Heading style={{ margin: 0, fontSize: 20, color: '#5B3A8A' }}>{`${toName},${fromName} 夸了你 +${points} 分 ✨`}</Heading>
-          <Section style={{ marginTop: 16 }}>
-            <Text style={{ margin: 0, color: '#B891D1', fontSize: 12, letterSpacing: 1.5, textTransform: 'uppercase', fontWeight: 700 }}>原因</Text>
-            <Text style={{ margin: '4px 0 0', fontSize: 16, fontWeight: 700, color: '#5B3A8A' }}>{reason}</Text>
+      <Body style={{ fontFamily: '-apple-system, system-ui, sans-serif', backgroundColor: '#FFFFFF', padding: 24, margin: 0 }}>
+        <Container style={{ background: '#FFFFFF', borderRadius: 16, padding: 4, maxWidth: 480 }}>
+          <Heading style={{ margin: 0, fontSize: 20, color: '#1C1C1E', fontWeight: 600 }}>{`${toName},${fromName} 夸了你 +${points} 分`}</Heading>
+          <Section style={{ marginTop: 16, padding: 14, background: '#F2F2F7', borderRadius: 14 }}>
+            <Text style={{ margin: 0, color: '#8E8E93', fontSize: 12, fontWeight: 500 }}>原因</Text>
+            <Text style={{ margin: '4px 0 0', fontSize: 15, fontWeight: 500, color: '#1C1C1E' }}>{reason}</Text>
           </Section>
-          <Section style={{ marginTop: 16, padding: 14, background: '#E8F4FF', borderRadius: 14, border: '1.5px solid #B4DCFF' }}>
-            <Text style={{ margin: 0, color: '#B891D1', fontSize: 12, letterSpacing: 1.5, textTransform: 'uppercase', fontWeight: 700 }}>你今日剩余</Text>
-            <Text style={{ margin: '4px 0 0', fontSize: 36, color: '#6FB8FF', fontWeight: 900 }}>{`${remaining}/100`}</Text>
+          <Section style={{ marginTop: 12, padding: 14, background: '#F2F2F7', borderRadius: 14 }}>
+            <Text style={{ margin: 0, color: '#8E8E93', fontSize: 12, fontWeight: 500 }}>你今日剩余</Text>
+            <Text style={{ margin: '4px 0 0', fontSize: 32, color: '#34C759', fontWeight: 700, letterSpacing: -0.5 }}>{`${remaining}/100`}</Text>
           </Section>
-          <Button href={appUrl} style={{ marginTop: 20, background: '#6FB8FF', color: '#FFFFFF', padding: '12px 18px', borderRadius: 14, border: '2px solid #FFFFFF', boxShadow: '3px 3px 0 #B4DCFF', fontWeight: 800, textDecoration: 'none', display: 'inline-block' }}>查看明细 →</Button>
+          <Button href={appUrl} style={{ marginTop: 18, background: '#34C759', color: '#FFFFFF', padding: '12px 20px', borderRadius: 14, fontWeight: 600, textDecoration: 'none', display: 'inline-block' }}>查看明细</Button>
         </Container>
       </Body>
     </Html>

@@ -2,7 +2,6 @@
 import { useState, useTransition } from 'react';
 import { Sheet, SheetContent, SheetTrigger, SheetClose, SheetTitle } from '@/components/ui/sheet';
 import { Button } from '@/components/ui/button';
-import { cn } from '@/lib/utils';
 import { createDeductionAction } from '@/lib/server-actions/create-deduction';
 
 const CHIPS = [5, 10, 15, 20] as const;
@@ -32,15 +31,15 @@ export function DeductSheet({ partnerRemaining }: { partnerRemaining: number }) 
   return (
     <Sheet open={open} onOpenChange={setOpen}>
       <SheetTrigger asChild>
-        <Button variant="primary" size="lg" disabled={disabled} className="w-full">
-          {disabled ? 'Ta 今天已被打空' : '⚔️ 出招'}
+        <Button variant="secondary" size="lg" disabled={disabled} className="w-full">
+          {disabled ? 'Ta 已被打空' : '出招'}
         </Button>
       </SheetTrigger>
       <SheetContent>
-        <SheetTitle className="text-center text-base font-extrabold">⚔️ 出招</SheetTitle>
+        <SheetTitle className="text-center text-base font-semibold">出招</SheetTitle>
 
         <div className="mt-4">
-          <div className="text-[11px] font-extrabold tracking-widest uppercase mb-2">扣多少</div>
+          <div className="text-xs font-semibold text-muted mb-2">扣多少</div>
           <div className="grid grid-cols-4 gap-2">
             {CHIPS.map((n) => (
               <button
@@ -58,7 +57,7 @@ export function DeductSheet({ partnerRemaining }: { partnerRemaining: number }) 
         </div>
 
         <div className="mt-4">
-          <div className="text-[11px] font-extrabold tracking-widest uppercase mb-2">原因</div>
+          <div className="text-xs font-semibold text-muted mb-2">原因</div>
           <textarea
             className="neo-input w-full min-h-[80px]"
             value={reason}
@@ -67,16 +66,16 @@ export function DeductSheet({ partnerRemaining }: { partnerRemaining: number }) 
             maxLength={500}
             required
           />
-          <div className="text-xs text-muted text-right">{reason.length}/500</div>
+          <div className="text-xs text-muted text-right mt-1">{reason.length}/500</div>
         </div>
 
-        {error && <p className="mt-2 text-sm font-bold text-danger">{error}</p>}
+        {error && <p className="mt-2 text-sm font-semibold text-danger">{error}</p>}
 
         <Button variant="danger" size="lg" className="w-full mt-4" disabled={pending || !reason.trim()} onClick={submit}>
           {pending ? '提交中…' : `确认 -${Math.min(points, partnerRemaining)} 分`}
         </Button>
         <SheetClose asChild>
-          <button className="block mx-auto mt-2 text-xs font-bold text-muted">取消</button>
+          <button className="block mx-auto mt-2 text-sm font-semibold text-muted">取消</button>
         </SheetClose>
       </SheetContent>
     </Sheet>

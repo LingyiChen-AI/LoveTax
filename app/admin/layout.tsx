@@ -21,7 +21,7 @@ export default async function AdminLayout({ children }: { children: ReactNode })
             <button
               type="submit"
               title={`退出 (${me.email})`}
-              className="bg-paper border-2 border-white rounded-chip w-9 h-9 flex items-center justify-center shadow-neo-sm active:translate-x-[1px] active:translate-y-[1px] active:shadow-none"
+              className="bg-paper rounded-chip w-9 h-9 flex items-center justify-center active:opacity-70"
             >
               <LogOut size={15} />
             </button>

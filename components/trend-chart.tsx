@@ -12,13 +12,13 @@ export function TrendChart({ data, meLabel, partnerLabel }: TrendChartProps) {
     <div className="neo p-3 h-72">
       <ResponsiveContainer width="100%" height="100%">
         <LineChart data={data} margin={{ top: 8, right: 8, left: -16, bottom: 0 }}>
-          <CartesianGrid strokeDasharray="4 4" stroke="#E5E7EB" />
-          <XAxis dataKey="date" tickFormatter={(d) => d.slice(5)} tick={{ fontSize: 10, fill: '#1F2937', fontWeight: 700 }} />
-          <YAxis domain={[0, 100]} tick={{ fontSize: 10, fill: '#1F2937', fontWeight: 700 }} />
-          <Tooltip contentStyle={{ border: '2px solid #1F2937', borderRadius: 8 }} />
-          <Legend wrapperStyle={{ fontSize: 11, fontWeight: 800 }} />
-          <Line type="monotone" dataKey="meRemaining" name={meLabel} stroke="#DC2626" strokeWidth={3} dot={{ r: 3 }} />
-          <Line type="monotone" dataKey="partnerRemaining" name={partnerLabel} stroke="#10B981" strokeWidth={3} dot={{ r: 3 }} />
+          <CartesianGrid strokeDasharray="4 4" stroke="#E5E5EA" />
+          <XAxis dataKey="date" tickFormatter={(d) => d.slice(5)} tick={{ fontSize: 10, fill: '#8E8E93', fontWeight: 500 }} stroke="#E5E5EA" />
+          <YAxis domain={[0, 100]} tick={{ fontSize: 10, fill: '#8E8E93', fontWeight: 500 }} stroke="#E5E5EA" />
+          <Tooltip contentStyle={{ border: 'none', borderRadius: 12, boxShadow: '0 4px 16px rgba(0,0,0,0.1)', fontSize: 12 }} />
+          <Legend wrapperStyle={{ fontSize: 11, fontWeight: 500 }} />
+          <Line type="monotone" dataKey="meRemaining"      name={meLabel}      stroke="#34C759" strokeWidth={2.5} dot={{ r: 3 }} />
+          <Line type="monotone" dataKey="partnerRemaining" name={partnerLabel} stroke="#007AFF" strokeWidth={2.5} dot={{ r: 3 }} />
         </LineChart>
       </ResponsiveContainer>
     </div>

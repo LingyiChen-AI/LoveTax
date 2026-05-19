@@ -32,19 +32,15 @@ export function PraiseSheet({ partnerRemaining }: { partnerRemaining: number }) 
   return (
     <Sheet open={open} onOpenChange={setOpen}>
       <SheetTrigger asChild>
-        <Button
-          size="lg"
-          disabled={disabled}
-          className="w-full bg-sky-grad shadow-neo-blue"
-        >
-          {disabled ? 'Ta 满血了' : '✨ 夸 Ta'}
+        <Button variant="primary" size="lg" disabled={disabled} className="w-full">
+          {disabled ? 'Ta 满血了' : '夸 Ta'}
         </Button>
       </SheetTrigger>
       <SheetContent>
-        <SheetTitle className="text-center text-base font-extrabold">✨ 夸 Ta</SheetTitle>
+        <SheetTitle className="text-center text-base font-semibold">夸 Ta</SheetTitle>
 
         <div className="mt-4">
-          <div className="text-[11px] font-extrabold tracking-widest uppercase mb-2">加多少</div>
+          <div className="text-xs font-semibold text-muted mb-2">加多少</div>
           <div className="grid grid-cols-4 gap-2">
             {CHIPS.map((n) => (
               <button
@@ -62,7 +58,7 @@ export function PraiseSheet({ partnerRemaining }: { partnerRemaining: number }) 
         </div>
 
         <div className="mt-4">
-          <div className="text-[11px] font-extrabold tracking-widest uppercase mb-2">原因</div>
+          <div className="text-xs font-semibold text-muted mb-2">原因</div>
           <textarea
             className="neo-input w-full min-h-[80px]"
             value={reason}
@@ -71,21 +67,22 @@ export function PraiseSheet({ partnerRemaining }: { partnerRemaining: number }) 
             maxLength={500}
             required
           />
-          <div className="text-xs text-muted text-right">{reason.length}/500</div>
+          <div className="text-xs text-muted text-right mt-1">{reason.length}/500</div>
         </div>
 
-        {error && <p className="mt-2 text-sm font-bold text-danger">{error}</p>}
+        {error && <p className="mt-2 text-sm font-semibold text-danger">{error}</p>}
 
         <Button
+          variant="primary"
           size="lg"
-          className="w-full mt-4 bg-sky-grad shadow-neo-blue"
+          className="w-full mt-4"
           disabled={pending || !reason.trim()}
           onClick={submit}
         >
-          {pending ? '提交中…' : `✨ 确认 +${Math.min(points, deficit)} 分`}
+          {pending ? '提交中…' : `确认 +${Math.min(points, deficit)} 分`}
         </Button>
         <SheetClose asChild>
-          <button className="block mx-auto mt-2 text-xs font-bold text-muted">取消</button>
+          <button className="block mx-auto mt-2 text-sm font-semibold text-muted">取消</button>
         </SheetClose>
       </SheetContent>
     </Sheet>
