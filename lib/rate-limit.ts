@@ -33,5 +33,6 @@ export const LIMITS = {
   register: { windowMs: 3600_000, limit: 3 },
   login: { windowMs: 300_000, limit: 10 },
   deduct: { windowMs: 60_000, limit: 10 },
+  bonus: { windowMs: 60_000, limit: 10 },
   invite: { windowMs: 3600_000, limit: 5 }
 } as const;
