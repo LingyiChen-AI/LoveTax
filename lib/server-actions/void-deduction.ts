@@ -1,6 +1,6 @@
 'use server';
 
-import { and, eq, isNull, sum } from 'drizzle-orm';
+import { and, eq, isNull, sql } from 'drizzle-orm';
 import { db } from '@/lib/db/client';
 import { deductions } from '@/lib/db/schema';
 import { voidDeductionSchema } from '@/lib/validation/schemas';
@@ -31,10 +31,27 @@ export async function voidDeductionAction(input: { id: string; reason?: string }
     .set({ voidedAt: new Date(), voidedReason: parsed.data.reason ?? null })
     .where(eq(deductions.id, row.id));
 
-  const [agg] = await db.select({ s: sum(deductions.points) }).from(deductions).where(
-    and(eq(deductions.toUserId, partner.id), eq(deductions.occurredLocalDate, row.occurredLocalDate), isNull(deductions.voidedAt))
-  );
-  const remaining = Math.max(0, DAILY_MAX - Number(agg?.s ?? 0));
+  const [dRow] = await db
+    .select({ s: sql<number>`COALESCE(SUM(${deductions.points}),0)::int` })
+    .from(deductions)
+    .where(and(
+      eq(deductions.toUserId, partner.id),
+      eq(deductions.occurredLocalDate, row.occurredLocalDate),
+      eq(deductions.kind, 'deduct'),
+      isNull(deductions.voidedAt)
+    ));
+  const [bRow] = await db
+    .select({ s: sql<number>`COALESCE(SUM(${deductions.points}),0)::int` })
+    .from(deductions)
+    .where(and(
+      eq(deductions.toUserId, partner.id),
+      eq(deductions.occurredLocalDate, row.occurredLocalDate),
+      eq(deductions.kind, 'bonus'),
+      isNull(deductions.voidedAt)
+    ));
+  const deductSum = Number(dRow?.s ?? 0);
+  const bonusSum = Number(bRow?.s ?? 0);
+  const remaining = Math.max(0, Math.min(DAILY_MAX, DAILY_MAX - deductSum + bonusSum));
 
   const appUrl = process.env.APP_URL ?? 'http://localhost:30001';
   const isBonus = row.kind === 'bonus';

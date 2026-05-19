@@ -115,3 +115,29 @@ describe('voidDeductionAction on bonus rows', () => {
     expect(r).toEqual({ ok: true });
   });
 });
+
+describe('voidDeductionAction remaining math with mixed kinds', () => {
+  beforeEach(async () => { await truncateAll(); clearSentEmails(); vi.restoreAllMocks(); });
+
+  it('voiding a deduction with active bonus → remaining = 100 + bonus capped at 100', async () => {
+    const c = await createCouple();
+    const A = await createUser({ coupleId: c.id });
+    const B = await createUser({ coupleId: c.id, email: 'b@t.local' });
+    const today = todayInTz('Asia/Shanghai');
+    const [d] = await db.insert(deductions).values({
+      coupleId: c.id, fromUserId: A.id, toUserId: B.id, points: 20,
+      reason: 'd', occurredLocalDate: today, kind: 'deduct'
+    }).returning();
+    await db.insert(deductions).values({
+      coupleId: c.id, fromUserId: A.id, toUserId: B.id, points: 10,
+      reason: 'b', occurredLocalDate: today, kind: 'bonus'
+    });
+    // Before void: 100 - 20 + 10 = 90
+    // After voiding the deduction: 100 - 0 + 10 = 110 → capped at 100
+    vi.spyOn(session, 'requirePaired').mockResolvedValue({ id: A.id, email: A.email, name: A.displayName, role: 'user', coupleId: c.id, mustChangePassword: false });
+    const r = await voidDeductionAction({ id: d.id });
+    expect(r).toEqual({ ok: true });
+    // Email body should reference the correct remaining (100)
+    expect(sentEmails[0].html).toContain('100/100');
+  });
+});
