@@ -154,8 +154,9 @@ GitHub Actions:
 
 | Workflow | 触发 | 做什么 |
 |---|---|---|
-| [`ci.yml`](.github/workflows/ci.yml) | push / PR | typecheck + unit + integration + E2E |
 | [`docker.yml`](.github/workflows/docker.yml) | push to main / tag `v*` | 构建并推 Docker 镜像 + 打 GitHub Release |
+
+测试在本地跑(见上一节),不进 CI。
 
 ## 项目文档
 
