@@ -23,13 +23,16 @@
     @apply bg-paper rounded-card;
   }
 
-  /* Input: gray surface, no border, subtle focus ring */
+  /* Input: white surface + hairline border so it reads as editable
+     against any background (gray card or white page). */
   .neo-input {
-    @apply bg-paper rounded-chip px-3 py-2.5 outline-none border border-transparent transition;
+    @apply bg-bg rounded-chip px-3 py-2.5 outline-none border transition;
     color: theme(colors.ink);
+    border-color: theme(colors.line);
   }
   .neo-input:focus {
     border-color: theme(colors.accent);
+    box-shadow: 0 0 0 3px rgba(52, 199, 89, 0.15);
   }
   .neo-input::placeholder { color: theme(colors.muted); }
 
