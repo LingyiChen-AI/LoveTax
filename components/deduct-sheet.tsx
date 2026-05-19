@@ -54,7 +54,7 @@ export function DeductSheet({ partnerRemaining }: { partnerRemaining: number }) 
               </button>
             ))}
           </div>
-          <div className="text-xs text-muted mt-1">最多 min({CHIPS[3]}, 剩余 {partnerRemaining})</div>
+          <div className="text-xs text-muted mt-1">最多还能扣 {Math.min(CHIPS[3], partnerRemaining)} 分</div>
         </div>
 
         <div className="mt-4">

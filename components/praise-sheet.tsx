@@ -58,7 +58,7 @@ export function PraiseSheet({ partnerRemaining }: { partnerRemaining: number }) 
               </button>
             ))}
           </div>
-          <div className="text-xs text-muted mt-1">最多 min({CHIPS[3]}, 还能加 {deficit})</div>
+          <div className="text-xs text-muted mt-1">最多还能加 {Math.min(CHIPS[3], deficit)} 分</div>
         </div>
 
         <div className="mt-4">
