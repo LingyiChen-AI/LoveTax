@@ -4,6 +4,7 @@ export type AppErrorCode =
   | 'INVALID_EMAIL'
   | 'WEAK_PASSWORD'
   | 'BLOOD_EMPTY'
+  | 'BONUS_FULL'
   | 'NOT_PAIRED'
   | 'FORBIDDEN_VOID'
   | 'INVITE_INVALID'
