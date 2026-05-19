@@ -18,7 +18,7 @@ export default async function CoupleDetail({ params }: { params: { id: string } 
         <Link href="/admin/couples" className="text-xs underline">← 返回</Link>
         <span className="font-mono text-[10px] text-muted">#{params.id.slice(0, 8)}</span>
       </div>
-      <h1 className="text-xs font-extrabold tracking-widest uppercase px-1">扣分历史 · {rows.length}</h1>
+      <h1 className="text-xs font-extrabold tracking-widest uppercase px-1">记录 · {rows.length}</h1>
 
       {rows.length === 0 ? (
         <p className="text-sm text-muted text-center py-6 neo p-4">暂无扣分记录</p>
@@ -31,7 +31,9 @@ export default async function CoupleDetail({ params }: { params: { id: string } 
                 <div key={r.id} className={`neo p-3 ${voided ? 'opacity-50' : ''}`}>
                   <div className="flex items-center justify-between gap-2">
                     <span className="text-[10px] text-muted">{fmtTime(r.occurredAt)}</span>
-                    <span className={`text-lg font-black ${voided ? 'line-through' : 'text-danger'}`}>-{r.points}</span>
+                    <span className={`text-lg font-black ${voided ? 'line-through' : (r.kind === 'bonus' ? 'text-healthy' : 'text-danger')}`}>
+                      {r.kind === 'bonus' ? '+' : '-'}{r.points}
+                    </span>
                   </div>
                   <div className="text-xs font-bold mt-0.5">{nameById.get(r.fromUserId) ?? '?'} → {nameById.get(r.toUserId) ?? '?'}</div>
                   <div className={`text-sm mt-1 break-words ${voided ? 'line-through' : ''}`}>{r.reason}</div>
@@ -49,7 +51,9 @@ export default async function CoupleDetail({ params }: { params: { id: string } 
                   <tr key={r.id} className={`border-t border-pink/15 ${r.voidedAt ? 'opacity-50' : ''}`}>
                     <td className="p-2">{fmtTime(r.occurredAt)}</td>
                     <td className="p-2">{nameById.get(r.fromUserId)} → {nameById.get(r.toUserId)}</td>
-                    <td className="p-2 text-danger font-extrabold">-{r.points}</td>
+                    <td className={`p-2 font-extrabold ${r.kind === 'bonus' ? 'text-healthy' : 'text-danger'}`}>
+                      {r.kind === 'bonus' ? '+' : '-'}{r.points}
+                    </td>
                     <td className="p-2 truncate max-w-xs">{r.reason}</td>
                     <td className="p-2">{r.voidedAt ? 'voided' : 'active'}</td>
                   </tr>
