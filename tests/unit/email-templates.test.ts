@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { renderDeduction, renderVoid, renderInvite, renderPasswordReset } from '@/lib/email/render';
+import { renderDeduction, renderVoid, renderInvite, renderPasswordReset, renderBonus, renderBonusVoid } from '@/lib/email/render';
 
 describe('email templates', () => {
   it('deduction renders + contains key fields', async () => {
@@ -33,5 +33,36 @@ describe('email templates', () => {
   it('void has remaining', async () => {
     const { html } = await renderVoid({ appUrl: 'https://x', fromName: 'A', toName: 'B', points: 5, reason: 'x', remaining: 95 });
     expect(html).toContain('95/100');
+  });
+});
+
+describe('bonus email templates', () => {
+  it('bonus renders + contains key fields', async () => {
+    const { html, text } = await renderBonus({
+      appUrl: 'https://x', fromName: '宝宝', toName: '亲爱的',
+      points: 10, reason: '给我带了奶茶', remaining: 100
+    });
+    expect(html).toContain('+10');
+    expect(html).toContain('给我带了奶茶');
+    expect(html).toContain('100/100');
+    expect(text).toContain('给我带了奶茶');
+  });
+
+  it('bonus escapes HTML in reason', async () => {
+    const { html } = await renderBonus({
+      appUrl: 'https://x', fromName: 'A', toName: 'B',
+      points: 5, reason: '<script>alert(1)</script>', remaining: 100
+    });
+    expect(html).not.toContain('<script>alert(1)</script>');
+    expect(html).toContain('&lt;script&gt;');
+  });
+
+  it('bonus-void shows remaining', async () => {
+    const { html } = await renderBonusVoid({
+      appUrl: 'https://x', fromName: 'A', toName: 'B',
+      points: 5, reason: 'x', remaining: 95
+    });
+    expect(html).toContain('95/100');
+    expect(html).toContain('撤销');
   });
 });
