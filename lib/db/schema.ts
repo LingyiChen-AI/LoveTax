@@ -5,8 +5,9 @@ import { sql } from 'drizzle-orm';
 
 export const roleEnum = pgEnum('role', ['user', 'admin']);
 export const invitationStatusEnum = pgEnum('invitation_status', ['pending', 'accepted', 'expired']);
-export const emailTypeEnum = pgEnum('email_type', ['deduction', 'void', 'invite', 'password_reset']);
+export const emailTypeEnum = pgEnum('email_type', ['deduction', 'void', 'invite', 'password_reset', 'bonus', 'bonus_void']);
 export const emailStatusEnum = pgEnum('email_status', ['sent', 'failed']);
+export const eventKindEnum = pgEnum('event_kind', ['deduct', 'bonus']);
 
 export const couples = pgTable('couples', {
   id: uuid('id').primaryKey().default(sql`gen_random_uuid()`),
@@ -50,13 +51,15 @@ export const deductions = pgTable(
     occurredLocalDate: date('occurred_local_date').notNull(),
     voidedAt: timestamp('voided_at', { withTimezone: true }),
     voidedReason: text('voided_reason'),
-    createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow()
+    createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
+    kind: eventKindEnum('kind').notNull().default('deduct')
   },
   (t) => ({
     coupleDate: index('deductions_couple_date_idx').on(t.coupleId, t.occurredLocalDate),
     toDate: index('deductions_to_date_idx').on(t.toUserId, t.occurredLocalDate),
     pointsRange: check('deductions_points_range', sql`${t.points} BETWEEN 1 AND 20`),
-    reasonLen: check('deductions_reason_len', sql`length(${t.reason}) BETWEEN 1 AND 500`)
+    reasonLen: check('deductions_reason_len', sql`length(${t.reason}) BETWEEN 1 AND 500`),
+    coupleDateKind: index('deductions_couple_date_kind_idx').on(t.coupleId, t.occurredLocalDate, t.kind)
   })
 );
 
