@@ -34,7 +34,9 @@ export function ReasonRow({
             aria-expanded={expanded}
             className="flex-1 min-w-0 text-left flex items-center gap-1.5 group"
           >
-            <span className={cn('flex-1 min-w-0', !expanded && 'truncate')}>{reason}</span>
+            <span className="flex-1 min-w-0 truncate">
+              {expanded ? <span className="text-muted text-xs">展开</span> : reason}
+            </span>
             <span className="shrink-0 text-muted group-hover:text-ink transition-colors">
               {expanded ? <ChevronUp size={14} /> : <ChevronDown size={14} />}
             </span>
