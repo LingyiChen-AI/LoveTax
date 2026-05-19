@@ -1,6 +1,7 @@
 import { requirePaired } from '@/lib/auth/require-session';
 import { getTopReasons } from '@/lib/reports/reasons';
 import { db } from '@/lib/db/client';
+import { ReasonRow } from './reason-row';
 
 type Mode = 'me-deduct' | 'partner-deduct' | 'me-bonus' | 'partner-bonus';
 
@@ -41,14 +42,14 @@ export default async function ReasonsPage({ searchParams }: { searchParams: { mo
       ) : (
         <ol className="space-y-2">
           {rows.map((r, i) => (
-            <li key={r.reason} className="neo px-3 py-2 flex items-center gap-2 text-sm">
-              <span className="font-black text-muted w-6">#{i + 1}</span>
-              <span className="flex-1 truncate">{r.reason}</span>
-              <span className="text-xs font-extrabold">{r.count}×</span>
-              <span className={`font-extrabold w-12 text-right ${kind === 'bonus' ? 'text-healthy' : 'text-danger'}`}>
-                {kind === 'bonus' ? '+' : '-'}{r.total}
-              </span>
-            </li>
+            <ReasonRow
+              key={r.reason}
+              rank={i + 1}
+              reason={r.reason}
+              count={r.count}
+              total={r.total}
+              kind={kind}
+            />
           ))}
         </ol>
       )}
