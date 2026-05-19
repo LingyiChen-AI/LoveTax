@@ -1,6 +1,6 @@
 import type { Transporter } from 'nodemailer';
 
-export type EmailType = 'deduction' | 'void' | 'invite' | 'password_reset';
+export type EmailType = 'deduction' | 'void' | 'invite' | 'password_reset' | 'bonus' | 'bonus_void';
 
 export interface SendArgs {
   to: string;
