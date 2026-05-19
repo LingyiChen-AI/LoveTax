@@ -2,7 +2,7 @@
 import { db } from '@/lib/db/client';
 import { emailLog } from '@/lib/db/schema';
 import { requireAdmin } from '@/lib/auth/require-session';
-import { renderDeduction, renderVoid, renderBonus, renderBonusVoid } from '@/lib/email/render';
+import { renderDeduction, renderBonus } from '@/lib/email/render';
 import { sendWithRetry } from '@/lib/email/send-with-retry';
 import { revalidatePath } from 'next/cache';
 
@@ -14,7 +14,7 @@ export async function adminResendEmail(logId: string): Promise<{ ok: true } | { 
 
   const appUrl = process.env.APP_URL ?? 'http://localhost:30001';
   let payload: { html: string; text: string };
-  if (log.type === 'deduction' || log.type === 'void' || log.type === 'bonus' || log.type === 'bonus_void') {
+  if (log.type === 'deduction' || log.type === 'bonus') {
     if (!log.deductionId) return { error: 'NOT_FOUND' };
     const d = await db.query.deductions.findFirst({ where: (x, { eq }) => eq(x.id, log.deductionId!) });
     if (!d) return { error: 'NOT_FOUND' };
@@ -29,10 +29,7 @@ export async function adminResendEmail(logId: string): Promise<{ ok: true } | { 
       reason: d.reason,
       remaining: 100
     };
-    if (log.type === 'deduction') payload = await renderDeduction(args);
-    else if (log.type === 'void') payload = await renderVoid(args);
-    else if (log.type === 'bonus') payload = await renderBonus(args);
-    else /* bonus_void */ payload = await renderBonusVoid(args);
+    payload = log.type === 'deduction' ? await renderDeduction(args) : await renderBonus(args);
   } else {
     return { error: 'CONFLICT' };
   }

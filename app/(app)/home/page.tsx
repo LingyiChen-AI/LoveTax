@@ -6,28 +6,25 @@ import { DeductSheet } from '@/components/deduct-sheet';
 import { PraiseSheet } from '@/components/praise-sheet';
 import { FeedList } from '@/components/feed-list';
 import type { FeedItemViewModel } from '@/components/feed-item';
-import { todayInTz } from '@/lib/date';
 
 export default async function Home() {
   const me = await requirePaired();
   const view = await getCoupleTodayView(me.coupleId, me.id);
   const partnerRow = await db.query.users.findFirst({ where: (u, { eq }) => eq(u.id, view.partner.id) });
   const myRow = await db.query.users.findFirst({ where: (u, { eq }) => eq(u.id, me.id) });
-  const partnerTz = partnerRow?.timezone ?? 'Asia/Shanghai';
-  const today = todayInTz(partnerTz);
 
-  const items: FeedItemViewModel[] = view.feed.map((f) => ({
-    id: f.id,
-    fromName: f.fromUserId === me.id ? (myRow?.displayName ?? 'Me') : (partnerRow?.displayName ?? 'Ta'),
-    toName: f.toUserId === me.id ? (myRow?.displayName ?? 'Me') : (partnerRow?.displayName ?? 'Ta'),
-    points: f.points,
-    reason: f.reason,
-    occurredAt: f.occurredAt,
-    voided: !!f.voidedAt,
-    isMine: f.fromUserId === me.id,
-    canVoid: f.fromUserId === me.id && !f.voidedAt && f.occurredLocalDate === today,
-    kind: f.kind
-  }));
+  const items: FeedItemViewModel[] = view.feed
+    .filter((f) => !f.voidedAt) // legacy voided rows remain in DB but are hidden from the feed
+    .map((f) => ({
+      id: f.id,
+      fromName: f.fromUserId === me.id ? (myRow?.displayName ?? 'Me') : (partnerRow?.displayName ?? 'Ta'),
+      toName: f.toUserId === me.id ? (myRow?.displayName ?? 'Me') : (partnerRow?.displayName ?? 'Ta'),
+      points: f.points,
+      reason: f.reason,
+      occurredAt: f.occurredAt,
+      isMine: f.fromUserId === me.id,
+      kind: f.kind
+    }));
 
   return (
     <div className="space-y-4">

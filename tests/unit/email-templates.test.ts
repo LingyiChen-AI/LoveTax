@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { renderDeduction, renderVoid, renderInvite, renderPasswordReset, renderBonus, renderBonusVoid } from '@/lib/email/render';
+import { renderDeduction, renderInvite, renderPasswordReset, renderBonus } from '@/lib/email/render';
 
 describe('email templates', () => {
   it('deduction renders + contains key fields', async () => {
@@ -30,10 +30,6 @@ describe('email templates', () => {
     expect(html).toContain('Temp123!');
     expect(html).toContain('a@b');
   });
-  it('void has remaining', async () => {
-    const { html } = await renderVoid({ appUrl: 'https://x', fromName: 'A', toName: 'B', points: 5, reason: 'x', remaining: 95 });
-    expect(html).toContain('95/100');
-  });
 });
 
 describe('bonus email templates', () => {
@@ -55,14 +51,5 @@ describe('bonus email templates', () => {
     });
     expect(html).not.toContain('<script>alert(1)</script>');
     expect(html).toContain('&lt;script&gt;');
-  });
-
-  it('bonus-void shows remaining', async () => {
-    const { html } = await renderBonusVoid({
-      appUrl: 'https://x', fromName: 'A', toName: 'B',
-      points: 5, reason: 'x', remaining: 95
-    });
-    expect(html).toContain('95/100');
-    expect(html).toContain('撤销');
   });
 });
