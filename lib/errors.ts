@@ -13,6 +13,8 @@ export type AppErrorCode =
   | 'FORBIDDEN'
   | 'NOT_FOUND'
   | 'CONFLICT'
+  | 'CODE_REQUIRED'
+  | 'CODE_INVALID'
   | 'INTERNAL';
 
 export class AppError extends Error {

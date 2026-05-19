@@ -3,6 +3,7 @@ import Deduction, { type DeductionProps } from './templates/deduction';
 import InviteTpl, { type InviteProps } from './templates/invite';
 import PWReset, { type PWProps } from './templates/password-reset';
 import Bonus, { type BonusProps } from './templates/bonus';
+import PasswordCode, { type PasswordCodeProps } from './templates/password-code';
 
 export async function renderDeduction(p: DeductionProps) {
   return {
@@ -29,5 +30,12 @@ export async function renderBonus(p: BonusProps) {
   return {
     html: await render(Bonus(p)),
     text: await render(Bonus(p), { plainText: true })
+  };
+}
+
+export async function renderPasswordCode(p: PasswordCodeProps) {
+  return {
+    html: await render(PasswordCode(p)),
+    text: await render(PasswordCode(p), { plainText: true })
   };
 }

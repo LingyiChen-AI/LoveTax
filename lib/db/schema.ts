@@ -5,9 +5,10 @@ import { sql } from 'drizzle-orm';
 
 export const roleEnum = pgEnum('role', ['user', 'admin']);
 export const invitationStatusEnum = pgEnum('invitation_status', ['pending', 'accepted', 'expired']);
-export const emailTypeEnum = pgEnum('email_type', ['deduction', 'void', 'invite', 'password_reset', 'bonus', 'bonus_void']);
+export const emailTypeEnum = pgEnum('email_type', ['deduction', 'void', 'invite', 'password_reset', 'bonus', 'bonus_void', 'password_code']);
 export const emailStatusEnum = pgEnum('email_status', ['sent', 'failed']);
 export const eventKindEnum = pgEnum('event_kind', ['deduct', 'bonus']);
+export const verificationPurposeEnum = pgEnum('verification_purpose', ['password_change']);
 
 export const couples = pgTable('couples', {
   id: uuid('id').primaryKey().default(sql`gen_random_uuid()`),
@@ -80,3 +81,19 @@ export const rateLimits = pgTable('rate_limits', {
   count: integer('count').notNull(),
   windowStart: timestamp('window_start', { withTimezone: true }).notNull()
 });
+
+export const verificationCodes = pgTable(
+  'verification_codes',
+  {
+    id: uuid('id').primaryKey().default(sql`gen_random_uuid()`),
+    userId: uuid('user_id').notNull().references(() => users.id, { onDelete: 'cascade' }),
+    code: text('code').notNull(),
+    purpose: verificationPurposeEnum('purpose').notNull(),
+    expiresAt: timestamp('expires_at', { withTimezone: true }).notNull(),
+    usedAt: timestamp('used_at', { withTimezone: true }),
+    createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow()
+  },
+  (t) => ({
+    userPurpose: index('verification_codes_user_purpose_idx').on(t.userId, t.purpose)
+  })
+);

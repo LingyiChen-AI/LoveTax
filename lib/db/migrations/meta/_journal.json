@@ -15,6 +15,13 @@
       "when": 1779155940670,
       "tag": "0001_sleepy_reptil",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1779161163795,
+      "tag": "0002_fast_frightful_four",
+      "breakpoints": true
     }
   ]
 }
