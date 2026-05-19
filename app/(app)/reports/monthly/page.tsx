@@ -40,6 +40,8 @@ export default async function MonthlyPage({ searchParams }: { searchParams: { mo
         <Stat label="最坏" value={summary.worstDay ? `${summary.worstDay.date.slice(5)} · ${summary.worstDay.remaining}` : '—'} />
         <Stat label="最好" value={summary.bestDay ? `${summary.bestDay.date.slice(5)} · ${summary.bestDay.remaining}` : '—'} />
         <Stat label="和谐率" value={`${Math.round(summary.harmonyRate * 100)}%`} className="col-span-2" />
+        <Stat label="被夸次数" value={`${summary.praiseCount}`} />
+        <Stat label="被夸总分" value={`+${summary.praisePointsTotal}`} />
       </div>
     </div>
   );
