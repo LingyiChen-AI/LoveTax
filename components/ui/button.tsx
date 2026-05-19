@@ -4,13 +4,13 @@ import { cva, type VariantProps } from 'class-variance-authority';
 import { cn } from '@/lib/utils';
 
 const buttonVariants = cva(
-  'inline-flex items-center justify-center font-extrabold tracking-wider border-[2.5px] border-ink rounded-card shadow-neo transition active:translate-x-[2px] active:translate-y-[2px] active:shadow-none disabled:opacity-50',
+  'inline-flex items-center justify-center font-extrabold tracking-wider border-2 border-white rounded-card shadow-neo transition active:translate-x-[1px] active:translate-y-[1px] active:shadow-neo-sm disabled:opacity-50',
   {
     variants: {
       variant: {
-        primary: 'bg-accent text-ink',
+        primary: 'bg-pink-grad text-white',
         danger: 'bg-danger text-white',
-        ghost: 'bg-paper text-ink shadow-none border-2'
+        ghost: 'bg-paper text-ink shadow-neo-sm'
       },
       size: { sm: 'px-3 py-2 text-sm', md: 'px-4 py-3 text-sm', lg: 'px-5 py-3.5 text-base' }
     },

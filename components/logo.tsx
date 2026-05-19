@@ -23,30 +23,27 @@ export function Logo({ size = 'md', showWordmark = true, className }: LogoProps)
         xmlns="http://www.w3.org/2000/svg"
         aria-label="LoveTax logo"
       >
-        {/* Hard offset shadow */}
-        <rect x="11" y="11" width="80" height="80" rx="14" fill="#1F2937" />
-        {/* Yellow card */}
-        <rect
-          x="5"
-          y="5"
-          width="80"
-          height="80"
-          rx="14"
-          fill="#FBBF24"
-          stroke="#1F2937"
-          strokeWidth="5"
-        />
-        {/* Ink-black heart */}
+        <defs>
+          <linearGradient id="lt-heart" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stopColor="#FF6FB5" />
+            <stop offset="100%" stopColor="#C77DFF" />
+          </linearGradient>
+        </defs>
+        {/* Pink offset "sticker" shadow */}
+        <rect x="11" y="11" width="80" height="80" rx="20" fill="#FFB6E6" />
+        {/* White card with subtle outer stroke */}
+        <rect x="5" y="5" width="80" height="80" rx="20" fill="#FFFFFF" stroke="#FFCDE8" strokeWidth="2" />
+        {/* Gradient heart */}
         <path
           d="M45 67 C33 59 21 50 21 39 C21 30 29 25 36 28 C41 30 44 34 45 38 C46 34 49 30 54 28 C61 25 69 30 69 39 C69 50 57 59 45 67 Z"
-          fill="#1F2937"
+          fill="url(#lt-heart)"
           strokeLinejoin="round"
         />
-        {/* White minus bar (the "deduction") slicing across the heart */}
-        <rect x="27" y="41" width="36" height="7" rx="1.5" fill="#FFFFFF" />
+        {/* White minus pill across heart */}
+        <rect x="27" y="42" width="36" height="6" rx="3" fill="#FFFFFF" />
       </svg>
       {showWordmark && (
-        <span className={cn(dim.text, 'font-black tracking-tight leading-none')}>
+        <span className={cn(dim.text, 'font-black tracking-tight leading-none text-pink-grad')}>
           LoveTax
         </span>
       )}

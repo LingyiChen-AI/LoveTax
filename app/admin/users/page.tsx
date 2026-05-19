@@ -17,7 +17,7 @@ export default async function AdminUsers() {
           </summary>
           <form
             action={async (fd: FormData) => { 'use server'; await adminCreateUser(fd); }}
-            className="border-t-2 border-ink p-3 space-y-2"
+            className="border-t-2 border-pink/20 p-3 space-y-2"
           >
             <input className="neo-input w-full text-sm" name="email" type="email" placeholder="邮箱" required />
             <input className="neo-input w-full text-sm" name="displayName" placeholder="称呼" required maxLength={20} />
@@ -40,12 +40,12 @@ export default async function AdminUsers() {
                 <div className="text-xs text-muted truncate">{u.email}</div>
               </div>
               <div className="flex gap-1 shrink-0">
-                <span className={`text-[10px] font-extrabold px-2 py-0.5 border-2 border-ink rounded-chip ${u.role === 'admin' ? 'bg-accent' : 'bg-paper'}`}>{u.role === 'admin' ? '管理员' : '用户'}</span>
-                <span className={`text-[10px] font-extrabold px-2 py-0.5 border-2 border-ink rounded-chip ${u.coupleId ? 'bg-healthy/30' : 'bg-paper'}`}>{u.coupleId ? '已配对' : '未配对'}</span>
+                <span className={`text-[10px] font-extrabold px-2 py-0.5 border-2 border-white rounded-chip ${u.role === 'admin' ? 'bg-accent' : 'bg-paper'}`}>{u.role === 'admin' ? '管理员' : '用户'}</span>
+                <span className={`text-[10px] font-extrabold px-2 py-0.5 border-2 border-white rounded-chip ${u.coupleId ? 'bg-healthy/30' : 'bg-paper'}`}>{u.coupleId ? '已配对' : '未配对'}</span>
               </div>
             </div>
             <form action={async () => { 'use server'; await adminResetPassword(u.id); }}>
-              <button type="submit" className="w-full text-xs font-bold py-1.5 border-2 border-ink rounded-chip bg-paper hover:bg-bg active:translate-x-[1px] active:translate-y-[1px]">
+              <button type="submit" className="w-full text-xs font-bold py-1.5 border-2 border-white rounded-chip bg-paper hover:bg-bg active:translate-x-[1px] active:translate-y-[1px]">
                 重置密码 (发邮件给 {u.email})
               </button>
             </form>
@@ -54,7 +54,7 @@ export default async function AdminUsers() {
       </section>
 
       <section className="hidden md:block">
-        <table className="w-full text-sm border-2 border-ink bg-paper rounded-card overflow-hidden">
+        <table className="w-full text-sm border-2 border-white bg-paper rounded-card overflow-hidden">
           <thead className="bg-bg">
             <tr>
               <th className="text-left p-2">Email</th>
@@ -66,7 +66,7 @@ export default async function AdminUsers() {
           </thead>
           <tbody>
             {rows.map((u) => (
-              <tr key={u.id} className="border-t border-ink/20">
+              <tr key={u.id} className="border-t border-pink/15">
                 <td className="p-2">{u.email}</td>
                 <td className="p-2">{u.displayName}</td>
                 <td className="p-2">{u.role}</td>

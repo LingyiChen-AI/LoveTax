@@ -12,7 +12,7 @@ export default async function ReportsLayout({ children }: { children: ReactNode 
   await requirePaired();
   return (
     <div className="space-y-4">
-      <div className="flex bg-paper border-2 border-ink rounded-card p-1 gap-1">
+      <div className="flex bg-paper border-2 border-white rounded-card p-1 gap-1">
         {TABS.map((t) => (
           <Link key={t.href} href={t.href} className="flex-1 py-2 text-center text-sm font-extrabold rounded-chip hover:bg-bg">
             {t.label}

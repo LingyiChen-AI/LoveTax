@@ -29,12 +29,12 @@ export default async function EmailFailures() {
               <div key={r.id} className="neo p-3">
                 <div className="flex items-center justify-between gap-2 mb-1">
                   <span className="text-[10px] text-muted">{fmtTime(r.sentAt)}</span>
-                  <span className="text-[10px] font-extrabold px-2 py-0.5 border-2 border-ink rounded-chip bg-paper">{TYPE_LABEL[r.type] ?? r.type}</span>
+                  <span className="text-[10px] font-extrabold px-2 py-0.5 border-2 border-white rounded-chip bg-paper">{TYPE_LABEL[r.type] ?? r.type}</span>
                 </div>
                 <div className="text-sm font-bold truncate">{r.toEmail}</div>
                 <div className="text-xs text-danger mt-1 break-words">{r.error}</div>
                 <form action={async () => { 'use server'; await adminResendEmail(r.id); }} className="mt-2">
-                  <button type="submit" className="w-full text-xs font-bold py-1.5 border-2 border-ink rounded-chip bg-paper active:translate-x-[1px] active:translate-y-[1px]">
+                  <button type="submit" className="w-full text-xs font-bold py-1.5 border-2 border-white rounded-chip bg-paper active:translate-x-[1px] active:translate-y-[1px]">
                     重发
                   </button>
                 </form>
@@ -43,11 +43,11 @@ export default async function EmailFailures() {
           </section>
 
           <section className="hidden md:block">
-            <table className="w-full text-xs border-2 border-ink bg-paper rounded-card overflow-hidden">
+            <table className="w-full text-xs border-2 border-white bg-paper rounded-card overflow-hidden">
               <thead className="bg-bg"><tr><th className="p-2 text-left">时间</th><th className="p-2 text-left">类型</th><th className="p-2 text-left">收件人</th><th className="p-2 text-left">错误</th><th className="p-2 text-left">操作</th></tr></thead>
               <tbody>
                 {rows.map((r) => (
-                  <tr key={r.id} className="border-t border-ink/20">
+                  <tr key={r.id} className="border-t border-pink/15">
                     <td className="p-2">{fmtTime(r.sentAt)}</td>
                     <td className="p-2">{TYPE_LABEL[r.type] ?? r.type}</td>
                     <td className="p-2">{r.toEmail}</td>

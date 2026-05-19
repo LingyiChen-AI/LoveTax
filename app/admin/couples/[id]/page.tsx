@@ -42,11 +42,11 @@ export default async function CoupleDetail({ params }: { params: { id: string } 
           </section>
 
           <section className="hidden md:block">
-            <table className="w-full text-xs border-2 border-ink bg-paper rounded-card overflow-hidden">
+            <table className="w-full text-xs border-2 border-white bg-paper rounded-card overflow-hidden">
               <thead className="bg-bg"><tr><th className="p-2 text-left">时间</th><th className="p-2 text-left">From → To</th><th className="p-2 text-left">分</th><th className="p-2 text-left">原因</th><th className="p-2 text-left">状态</th></tr></thead>
               <tbody>
                 {rows.map((r) => (
-                  <tr key={r.id} className={`border-t border-ink/20 ${r.voidedAt ? 'opacity-50' : ''}`}>
+                  <tr key={r.id} className={`border-t border-pink/15 ${r.voidedAt ? 'opacity-50' : ''}`}>
                     <td className="p-2">{fmtTime(r.occurredAt)}</td>
                     <td className="p-2">{nameById.get(r.fromUserId)} → {nameById.get(r.toUserId)}</td>
                     <td className="p-2 text-danger font-extrabold">-{r.points}</td>
