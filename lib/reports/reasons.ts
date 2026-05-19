@@ -4,18 +4,28 @@ import { deductions } from '@/lib/db/schema';
 
 export interface ReasonRow { reason: string; count: number; total: number; }
 
-export async function getTopReasons(coupleId: string, toUserId: string | null, limit = 20): Promise<ReasonRow[]> {
+export async function getTopReasons(
+  coupleId: string,
+  toUserId: string | null,
+  limit = 20,
+  kind: 'deduct' | 'bonus' = 'deduct'
+): Promise<ReasonRow[]> {
   const reasonExpr = sql<string>`LOWER(BTRIM(${deductions.reason}))`;
-  const rows = await db.select({
-    reason: reasonExpr,
-    count: sql<number>`COUNT(*)::int`.as('count'),
-    total: sql<number>`SUM(${deductions.points})::int`.as('total')
-  }).from(deductions)
-    .where(and(
-      eq(deductions.coupleId, coupleId),
-      isNull(deductions.voidedAt),
-      toUserId ? eq(deductions.toUserId, toUserId) : sql`true`
-    ))
+  const rows = await db
+    .select({
+      reason: reasonExpr,
+      count: sql<number>`COUNT(*)::int`.as('count'),
+      total: sql<number>`SUM(${deductions.points})::int`.as('total')
+    })
+    .from(deductions)
+    .where(
+      and(
+        eq(deductions.coupleId, coupleId),
+        eq(deductions.kind, kind),
+        isNull(deductions.voidedAt),
+        toUserId ? eq(deductions.toUserId, toUserId) : sql`true`
+      )
+    )
     .groupBy(reasonExpr)
     .orderBy(sql`count DESC`)
     .limit(limit);

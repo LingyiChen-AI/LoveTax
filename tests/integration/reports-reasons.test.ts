@@ -37,3 +37,22 @@ describe('getTopReasons', () => {
     expect(rows).toEqual([]);
   });
 });
+
+describe('getTopReasons with kind filter', () => {
+  beforeEach(async () => { await truncateAll(); });
+
+  it('filters by kind', async () => {
+    const c = await createCouple();
+    const A = await createUser({ coupleId: c.id });
+    const B = await createUser({ coupleId: c.id });
+    const today = todayInTz('Asia/Shanghai');
+    await db.insert(deductions).values([
+      { coupleId: c.id, fromUserId: B.id, toUserId: A.id, points: 5, reason: '玩手机', occurredLocalDate: today, kind: 'deduct' },
+      { coupleId: c.id, fromUserId: B.id, toUserId: A.id, points: 5, reason: '带奶茶', occurredLocalDate: today, kind: 'bonus' }
+    ]);
+    const deductRows = await getTopReasons(c.id, null, 20, 'deduct');
+    expect(deductRows.map((r) => r.reason)).toEqual(['玩手机']);
+    const bonusRows = await getTopReasons(c.id, null, 20, 'bonus');
+    expect(bonusRows.map((r) => r.reason)).toEqual(['带奶茶']);
+  });
+});
