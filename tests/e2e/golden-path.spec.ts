@@ -12,7 +12,7 @@ test.beforeAll(async () => {
 
 test.beforeEach(async () => { await clearMailpit(); });
 
-test('golden path: register A → invite B → B accepts → A deducts → email → A voids → email → trend', async ({ browser }) => {
+test('golden path: register A → invite B → B accepts → A deducts → email → A praises → email → A voids praise → email → A voids → email → trend', async ({ browser }) => {
   const ctxA = await browser.newContext();
   const pageA = await ctxA.newPage();
   await pageA.goto('/register');
@@ -57,6 +57,23 @@ test('golden path: register A → invite B → B accepts → A deducts → email
   await pageA.waitForLoadState('networkidle');
   await expect(pageA.locator('text=玩手机太久')).toBeVisible();
 
+  // A praises B: +5 with reason "对不起" (B is at 90 after deduction, so praise is enabled)
+  await pageA.click('button:has-text("夸 Ta")');
+  // Scope clicks to the open praise sheet to disambiguate from deduct sheet chips
+  const praiseSheet = pageA.locator('[role="dialog"]').last();
+  await praiseSheet.locator('button:has-text("5")').first().click();
+  await praiseSheet.locator('textarea').fill('对不起');
+  await praiseSheet.locator('button:has-text("确认 +5")').click();
+  await waitForMailpitMessage({ to: 'b@t.local', subjectIncludes: '夸了你 +5' });
+  await pageA.waitForLoadState('networkidle');
+  await expect(pageA.locator('text=对不起')).toBeVisible();
+
+  // A voids the praise (praise is newest, so first 撤销 button targets it)
+  await pageA.locator('button:has-text("撤销")').first().click();
+  await pageA.click('button:has-text("确认撤销")');
+  await waitForMailpitMessage({ to: 'b@t.local', subjectIncludes: '撤销了一次夸奖' });
+
+  // A voids the original deduction
   await pageA.click('button:has-text("撤销")');
   await pageA.click('button:has-text("确认撤销")');
   await waitForMailpitMessage({ to: 'b@t.local', subjectIncludes: '撤销' });
